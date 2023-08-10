@@ -5,7 +5,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { MdOutlineLabelImportant } from "react-icons/md";
 import Image from "../../designLayouts/Image";
 import Badge from "./Badge";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
@@ -16,9 +16,9 @@ const Product = ({ product }) => {
   const navigate = useNavigate();
 
   const handleProductDetails = () => {
-    navigate(`/product/${product.name}`, {
+    navigate(`/product/${product?._id}`, {
       state: {
-        // item: productItem,
+        product: product,
       },
     });
   };
@@ -43,6 +43,7 @@ const Product = ({ product }) => {
                 <FaShoppingCart />
               </span>
             </li>
+
             <li
               onClick={handleProductDetails}
               className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full"
@@ -52,6 +53,7 @@ const Product = ({ product }) => {
                 <MdOutlineLabelImportant />
               </span>
             </li>
+
             <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
               Add to Wish List
               <span>
@@ -63,11 +65,11 @@ const Product = ({ product }) => {
       </div>
       <div className="max-w-80 py-6 flex flex-col gap-1 border-[1px] border-t-0 px-4">
         <div className="flex items-center justify-between font-titleFont">
-          <h2 className="text-lg text-primeColor font-bold">{product?.productName}</h2>
+          <h2 className="text-lg text-primeColor font-bold">{product?.name}</h2>
           <p className="text-[#767676] text-[14px]">${product?.price}</p>
         </div>
         <div>
-          <p className="text-[#767676] text-[14px]">{product?.color}</p>
+          <p className="text-[#767676] text-[14px]">{product?.brand}</p>
         </div>
       </div>
     </div>
