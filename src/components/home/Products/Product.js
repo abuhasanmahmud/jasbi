@@ -7,7 +7,7 @@ import Image from "../../designLayouts/Image";
 import Badge from "./Badge";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../redux/orebiSlice";
+import { addToCart } from "../../../redux/cartSlice";
 
 const Product = ({ product }) => {
   // console.log("product", product);
@@ -37,7 +37,10 @@ const Product = ({ product }) => {
                 <GiReturnArrow />
               </span>
             </li>
-            <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
+            <li
+              onClick={() => dispatch(addToCart(product))}
+              className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full"
+            >
               Add to Cart
               <span>
                 <FaShoppingCart />

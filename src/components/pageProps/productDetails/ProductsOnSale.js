@@ -4,7 +4,7 @@ import products from "./../../../staticData/products";
 import { Link } from "react-router-dom";
 
 const ProductsOnSale = () => {
-  const SplOfferData = products.slice(0, 10);
+  const SplOfferData = products?.slice(0, 10);
   return (
     <div>
       <h3 className="font-titleFont text-xl font-semibold mb-6 underline underline-offset-4 decoration-[1px]">
