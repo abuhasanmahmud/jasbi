@@ -10,18 +10,18 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
 const Product = ({ product }) => {
-  console.log("product", product);
+  // console.log("product", product);
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleProductDetails = () => {
-    navigate(`/product/${product?._id}`, {
-      state: {
-        product: product,
-      },
-    });
-  };
+  // const handleProductDetails = () => {
+  //   navigate(`/product/${product?._id}`, {
+  //     state: {
+  //       product: product,
+  //     },
+  //   });
+  // };
   return (
     <div className="w-full relative group">
       <div className="max-w-80 max-h-80 relative overflow-y-hidden ">
@@ -44,15 +44,14 @@ const Product = ({ product }) => {
               </span>
             </li>
 
-            <li
-              onClick={handleProductDetails}
-              className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full"
-            >
-              View Details
-              <span className="text-lg">
-                <MdOutlineLabelImportant />
-              </span>
-            </li>
+            <Link to={`/product/${product?._id}`}>
+              <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
+                View Details
+                <span className="text-lg">
+                  <MdOutlineLabelImportant />
+                </span>
+              </li>
+            </Link>
 
             <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
               Add to Wish List

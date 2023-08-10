@@ -2,27 +2,10 @@ import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import Product from "../../home/Products/Product";
 import { paginationItems } from "../../../constants";
-
+import products from "./../../../staticData/products";
 const items = paginationItems;
 function Items({ currentItems }) {
-  return (
-    <>
-      {currentItems &&
-        currentItems.map((item) => (
-          <div key={item._id} className="w-full">
-            <Product
-              _id={item._id}
-              img={item.img}
-              productName={item.productName}
-              price={item.price}
-              color={item.color}
-              badge={item.badge}
-              des={item.des}
-            />
-          </div>
-        ))}
-    </>
-  );
+  return <></>;
 }
 
 const Pagination = ({ itemsPerPage }) => {
@@ -52,7 +35,11 @@ const Pagination = ({ itemsPerPage }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mdl:gap-4 lg:gap-10">
-        <Items currentItems={currentItems} />
+        {products.slice(0, 20).map((item) => (
+          <div key={item._id} className="w-full">
+            <Product product={item} />
+          </div>
+        ))}
       </div>
       <div className="flex flex-col mdl:flex-row justify-center mdl:justify-between items-center">
         <ReactPaginate
@@ -69,8 +56,7 @@ const Pagination = ({ itemsPerPage }) => {
         />
 
         <p className="text-base font-normal text-lightText">
-          Products from {itemStart === 0 ? 1 : itemStart} to {endOffset} of{" "}
-          {items.length}
+          Products from {itemStart === 0 ? 1 : itemStart} to {endOffset} of {items.length}
         </p>
       </div>
     </div>

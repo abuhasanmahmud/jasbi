@@ -5,10 +5,10 @@ import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { paginationItems } from "../../../constants";
+import products from "../../../staticData/products";
 
 const HeaderBottom = () => {
-  const products = useSelector((state) => state.orebiReducer.products);
+  // const products = useSelector((state) => state.orebiReducer.products);
   const [show, setShow] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
@@ -32,8 +32,8 @@ const HeaderBottom = () => {
   };
 
   useEffect(() => {
-    const filtered = paginationItems.filter((item) =>
-      item.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    const filtered = products.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [searchQuery]);
@@ -93,39 +93,21 @@ const HeaderBottom = () => {
               >
                 {searchQuery &&
                   filteredProducts.map((item) => (
-                    <div
-                      onClick={() =>
-                        navigate(
-                          `/product/${item.productName
-                            .toLowerCase()
-                            .split(" ")
-                            .join("")}`,
-                          {
-                            state: {
-                              item: item,
-                            },
-                          }
-                        ) &
-                        setShowSearchBar(true) &
-                        setSearchQuery("")
-                      }
-                      key={item._id}
-                      className="max-w-[600px] h-28 bg-gray-100 mb-3 flex items-center gap-3"
-                    >
-                      <img className="w-24" src={item.img} alt="productImg" />
-                      <div className="flex flex-col gap-1">
-                        <p className="font-semibold text-lg">
-                          {item.productName}
-                        </p>
-                        <p className="text-xs">{item.des}</p>
-                        <p className="text-sm">
-                          Price:{" "}
-                          <span className="text-primeColor font-semibold">
-                            ${item.price}
-                          </span>
-                        </p>
+                    <Link to={`/product/${item._id}`}>
+                      <div
+                        key={item._id}
+                        className="max-w-[600px] h-28 bg-gray-100 mb-3 flex items-center gap-3"
+                      >
+                        <img className="w-24" src={item.img} alt="productImg" />
+                        <div className="flex flex-col gap-1">
+                          <p className="font-semibold text-lg">{item.name}</p>
+                          <p className="text-xs">{item.des}</p>
+                          <p className="text-sm">
+                            Price: <span className="text-primeColor font-semibold">${item.price}</span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
               </div>
             )}
@@ -164,7 +146,7 @@ const HeaderBottom = () => {
               <div className="relative">
                 <FaShoppingCart />
                 <span className="absolute font-titleFont top-3 -right-2 text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
-                  {products.length > 0 ? products.length : 0}
+                  0
                 </span>
               </div>
             </Link>

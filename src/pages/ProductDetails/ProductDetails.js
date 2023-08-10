@@ -7,9 +7,9 @@ import products from "../../staticData/products";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  console.log("id", id);
+  // console.log("id", id);
   const product = products.find((product) => product._id == id);
-  console.log("product", product);
+  // console.log("product", product);
 
   return (
     <div className="w-full mx-auto border-b-[1px] border-b-gray-300">

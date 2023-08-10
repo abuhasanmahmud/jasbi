@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
 const ProductInfo = ({ productInfo }) => {
-  console.log("productinfo", productInfo);
+  // console.log("productinfo", productInfo);
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col gap-5">
