@@ -12,11 +12,8 @@ const ProductsOnSale = () => {
       </h3>
       <div className="flex flex-col gap-2 h-96 overflow-auto ">
         {SplOfferData.map((item) => (
-          <Link to={`/product/${item._id}`}>
-            <div
-              key={item._id}
-              className="flex items-center gap-4 border-b-[1px] border-b-gray-300 py-2"
-            >
+          <Link key={item._id} to={`/product/${item._id}`}>
+            <div className="flex items-center gap-4 border-b-[1px] border-b-gray-300 py-2">
               <div>
                 <img className="w-24" src={item.img} alt={item.img} />
               </div>

@@ -8,18 +8,18 @@ import { useSelector } from "react-redux";
 import products from "../../../staticData/products";
 
 const HeaderBottom = () => {
-  // const products = useSelector((state) => state.orebiReducer.products);
+  const { cartItems } = useSelector((state) => state.cart);
   const [show, setShow] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
   const ref = useRef();
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
-      if (ref.current.contains(e.target)) {
-        setShow(true);
-      } else {
-        setShow(false);
-      }
+      // if (ref?.current?.contains(e.target)) {
+      //   setShow(true);
+      // } else {
+      //   setShow(false);
+      // }
     });
   }, [show, ref]);
 
@@ -145,8 +145,8 @@ const HeaderBottom = () => {
             <Link to="/cart">
               <div className="relative">
                 <FaShoppingCart />
-                <span className="absolute font-titleFont top-3 -right-2 text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
-                  0
+                <span className="absolute font-titleFont top-2 right-3 text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
+                  {cartItems?.length}
                 </span>
               </div>
             </Link>

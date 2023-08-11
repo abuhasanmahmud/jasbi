@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../redux/orebiSlice";
+import { addToCart } from "../../../redux/cartSlice";
 
 const ProductInfo = ({ productInfo }) => {
   // console.log("productinfo", productInfo);
@@ -15,19 +15,7 @@ const ProductInfo = ({ productInfo }) => {
         <span className="font-normal">Brand:</span> {productInfo.brand}
       </p>
       <button
-        onClick={() =>
-          dispatch(
-            addToCart({
-              _id: productInfo.id,
-              name: productInfo.productName,
-              quantity: 1,
-              image: productInfo.img,
-              badge: productInfo.badge,
-              price: productInfo.price,
-              colors: productInfo.color,
-            })
-          )
-        }
+        onClick={() => dispatch(addToCart(productInfo))}
         className="w-full py-4 bg-primeColor hover:bg-black duration-300 text-white text-lg font-titleFont"
       >
         Add to Cart

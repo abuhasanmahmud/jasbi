@@ -109,8 +109,21 @@ const cartSlice = createSlice({
         state.totalQuantity
       );
     },
+
+    resetCart: (state, action) => {
+      state.cartItems = [];
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
+
+      setItemFunc(
+        state.cartItems.map((item) => item),
+        state.totalAmount,
+        state.totalQuantity
+      );
+    },
   },
 });
 
-export const { addToCart, removeTocart, increaceQuantity, decreaceQuantity } = cartSlice.actions;
+export const { addToCart, removeTocart, increaceQuantity, decreaceQuantity, resetCart } =
+  cartSlice.actions;
 export default cartSlice;

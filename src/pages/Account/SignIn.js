@@ -1,46 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
-
+import { useForm } from "react-hook-form";
+import { useLoginMutation } from "../../redux/userApiSlice";
+import { setCredentials } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 const SignIn = () => {
-  // ============= Initial State Start here =============
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // ============= Initial State End here ===============
-  // ============= Error Msg Start here =================
-  const [errEmail, setErrEmail] = useState("");
-  const [errPassword, setErrPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+  const [checked, setChecked] = useState(false);
 
-  // ============= Error Msg End here ===================
-  const [successMsg, setSuccessMsg] = useState("");
-  // ============= Event Handler Start here =============
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-    setErrEmail("");
-  };
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-    setErrPassword("");
-  };
-  // ============= Event Handler End here ===============
-  const handleSignUp = (e) => {
-    e.preventDefault();
+  const [login, { isLoading }] = useLoginMutation();
 
-    if (!email) {
-      setErrEmail("Enter your email");
-    }
+  useEffect(() => {
+    // navigate("/");
+  }, [navigate, userInfo]);
 
-    if (!password) {
-      setErrPassword("Create a password");
-    }
-    // ============== Getting the value ==============
-    if (email && password) {
-      setSuccessMsg(
-        `Hello dear, Thank you for your attempt. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
-      );
-      setEmail("");
-      setPassword("");
+  const onSubmit = async (data) => {
+    const email = data.email;
+    const password = data.password;
+    // console.log("email", email, password);
+    try {
+      const res = await login({ email, password });
+      // console.log("res", res);
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
+    } catch (err) {
+      console.log(err?.data?.message || err.error);
     }
   };
   return (
@@ -51,9 +44,7 @@ const SignIn = () => {
             <img src={logoLight} alt="logoImg" className="w-28" />
           </Link>
           <div className="flex flex-col gap-1 -mt-1">
-            <h1 className="font-titleFont text-xl font-medium">
-              Stay sign in for more
-            </h1>
+            <h1 className="font-titleFont text-xl font-medium">Stay sign in for more</h1>
             <p className="text-base">When you sign in, you are with us!</p>
           </div>
           <div className="w-[300px] flex items-start gap-3">
@@ -65,8 +56,8 @@ const SignIn = () => {
                 Get started fast with OREBI
               </span>
               <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
+              consectetur!
             </p>
           </div>
           <div className="w-[300px] flex items-start gap-3">
@@ -74,12 +65,10 @@ const SignIn = () => {
               <BsCheckCircleFill />
             </span>
             <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Access all OREBI services
-              </span>
+              <span className="text-white font-semibold font-titleFont">Access all OREBI services</span>
               <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
+              consectetur!
             </p>
           </div>
           <div className="w-[300px] flex items-start gap-3">
@@ -87,12 +76,10 @@ const SignIn = () => {
               <BsCheckCircleFill />
             </span>
             <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Trusted by online Shoppers
-              </span>
+              <span className="text-white font-semibold font-titleFont">Trusted by online Shoppers</span>
               <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis
-              nisi dolor recusandae consectetur!
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
+              consectetur!
             </p>
           </div>
           <div className="flex items-center justify-between mt-10">
@@ -113,86 +100,146 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-      <div className="w-full lgl:w-1/2 h-full">
-        {successMsg ? (
-          <div className="w-full lgl:w-[500px] h-full flex flex-col justify-center">
-            <p className="w-full px-4 py-10 text-green-500 font-medium font-titleFont">
-              {successMsg}
-            </p>
-            <Link to="/signup">
-              <button
-                className="w-full h-10 bg-primeColor text-gray-200 rounded-md text-base font-titleFont font-semibold 
-            tracking-wide hover:bg-black hover:text-white duration-300"
-              >
-                Sign Up
-              </button>
-            </Link>
+      <div className="w-full  h-full md:p-10 ">
+        {/* <form className="w-full " onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-control w-full mb-5 ">
+            <label className="">
+              <span className="text-secondary font-semibold text-lg">Email</span>
+            </label>
+            <input
+              type="text"
+              placeholder="example@email.com"
+              className="input input-bordered w-full rounded-full"
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email Required !!!",
+                },
+              })}
+            />
+            <label className="level font-bold">
+              {errors?.email?.type === "required" && (
+                <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
+              )}
+              {errors?.email?.type === "pattern" && (
+                <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
+              )}
+            </label>
           </div>
-        ) : (
-          <form className="w-full lgl:w-[450px] h-screen flex items-center justify-center">
-            <div className="px-6 py-4 w-full h-[90%] flex flex-col justify-center overflow-y-scroll scrollbar-thin scrollbar-thumb-primeColor">
-              <h1 className="font-titleFont underline underline-offset-4 decoration-[1px] font-semibold text-3xl mdl:text-4xl mb-4">
-                Sign in
-              </h1>
-              <div className="flex flex-col gap-3">
-                {/* Email */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Work Email
-                  </p>
-                  <input
-                    onChange={handleEmail}
-                    value={email}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="email"
-                    placeholder="john@workemail.com"
-                  />
-                  {errEmail && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errEmail}
-                    </p>
-                  )}
-                </div>
+          <div className="form-control w-full">
+            <label className="">
+              <span className="text-secondary font-semibold text-lg">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="abcd123$"
+              className="input input-bordered w-full rounded-full"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password Required !!!",
+                },
+              })}
+            />
+            <label className="level font-bold">
+              {errors?.password?.type === "required" && (
+                <span className="label-text-alt text-red-500">{errors?.password?.message}</span>
+              )}
+              {errors?.password?.type === "pattern" && (
+                <span className="label-text-alt text-red-500">{errors?.password?.message}</span>
+              )}
+            </label>
+          </div>
+          <input type="submit" />
+        </form> */}
+        <form className="w-100 mx-auto shadow-xl px-4 py-8 " onSubmit={handleSubmit(onSubmit)}>
+          {/* register your input into the hook by invoking the "register" function */}
+          <h1 className="font-titleFont underline underline-offset-4 decoration-[1px] font-semibold text-2xl mdl:text-3xl mb-4">
+            Login your account
+          </h1>
+          <div className="flex flex-col gap-.5">
+            <p className="font-titleFont text-base font-semibold text-gray-600 my-2">Work Email</p>
+            <input
+              className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
+              type="email"
+              placeholder="john@workemail.com"
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email Required !!!",
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
+                  message: "Invalid Email Provided !!!",
+                },
+              })}
+            />
+            <label className="level font-bold">
+              {errors?.email?.type === "required" && (
+                <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
+              )}
+              {errors?.email?.type === "pattern" && (
+                <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
+              )}
+            </label>
+          </div>
 
-                {/* Password */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Password
-                  </p>
-                  <input
-                    onChange={handlePassword}
-                    value={password}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="password"
-                    placeholder="Create password"
-                  />
-                  {errPassword && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errPassword}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  onClick={handleSignUp}
-                  className="bg-primeColor hover:bg-black text-gray-200 hover:text-white cursor-pointer w-full text-base font-medium h-10 rounded-md  duration-300"
-                >
-                  Sign In
-                </button>
-                <p className="text-sm text-center font-titleFont font-medium">
-                  Don't have an Account?{" "}
-                  <Link to="/signup">
-                    <span className="hover:text-blue-600 duration-300">
-                      Sign up
-                    </span>
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </form>
-        )}
+          {/* errors will return when field validation fails  */}
+          <div className="flex flex-col gap-.5">
+            <p className="font-titleFont text-base font-semibold text-gray-600 my-2">Password</p>
+            <input
+              className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
+              type="password"
+              placeholder="Your password"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password Required !!!",
+                },
+                pattern: {
+                  value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
+                  message: "Password Must be 8 char including a special char !!!",
+                },
+              })}
+            />
+            <label className="level font-bold">
+              {errors?.password?.type === "required" && (
+                <span className="label-text-alt text-red-500">{errors?.password?.message}</span>
+              )}
+              {errors?.password?.type === "pattern" && (
+                <span className="label-text-alt text-red-500">{errors?.password.message}</span>
+              )}
+            </label>
+          </div>
+          {/* Checkbox */}
+          <div className="flex items-start mdl:items-center gap-2 my-3">
+            <input
+              onChange={() => setChecked(!checked)}
+              className="w-4 h-4 mt-1 mdl:mt-0 cursor-pointer"
+              type="checkbox"
+            />
+            <p className="text-sm text-primeColor">
+              I agree to the OREBI <span className="text-blue-500">Terms of Service </span>and{" "}
+              <span className="text-blue-500">Privacy Policy</span>.
+            </p>
+          </div>
+          <button
+            type="submit"
+            className={`${
+              checked
+                ? "bg-primeColor hover:bg-black hover:text-white cursor-pointer"
+                : "bg-gray-500 hover:bg-gray-500 hover:text-gray-200 cursor-none"
+            } w-full text-gray-200 text-base font-medium h-10 rounded-md hover:text-white duration-300`}
+          >
+            Sign In
+          </button>
+          <p className="text-sm text-center font-titleFont font-medium mt-4">
+            Don't have an Account?{" "}
+            <Link to="/signup">
+              <span className="hover:text-blue-600 duration-300">Create Account</span>
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );

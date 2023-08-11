@@ -1,7 +1,6 @@
 import React from "react";
 import { ImCross } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem, drecreaseQuantity, increaseQuantity } from "../../redux/orebiSlice";
 import { removeTocart, increaceQuantity, decreaceQuantity } from "../../redux/cartSlice";
 const ItemCard = ({ item }) => {
   const {} = useSelector((state) => state.cart);
