@@ -5,6 +5,7 @@ import products from "../../../staticData/products";
 
 const BestSellers = () => {
   const bestSellingProduct = products.slice(0, 6);
+
   return (
     <div className="w-full pb-20">
       <Heading heading="Our Bestsellers" />

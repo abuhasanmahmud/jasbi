@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/userApiSlice";
 import { setCredentials } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const SignIn = () => {
   const {
     register,
@@ -30,10 +31,11 @@ const SignIn = () => {
     try {
       const res = await login({ email, password });
       // console.log("res", res);
+      toast.success("salfsdlaksdjfl");
       dispatch(setCredentials({ ...res }));
-      navigate("/");
+      // navigate("/");
     } catch (err) {
-      console.log(err?.data?.message || err.error);
+      toast.success("asdasd");
     }
   };
   return (
