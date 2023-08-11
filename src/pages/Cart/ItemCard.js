@@ -21,7 +21,6 @@ const ItemCard = ({ item }) => {
         <div className="flex w-1/3 items-center text-lg font-semibold">${item.price}</div>
         <div className="w-1/3 flex items-center gap-6 text-lg">
           <span
-            disabled="disabled"
             onClick={() => dispatch(decreaceQuantity({ _id: item._id }))}
             className="w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-300"
           >
