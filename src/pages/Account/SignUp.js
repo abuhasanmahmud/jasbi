@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterUserMutation } from "../../redux/userApiSlice";
 import { setCredentials } from "../../redux/authSlice";
+import { toast } from "react-toastify";
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const {
@@ -15,6 +16,12 @@ const SignUp = () => {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, []);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const onSubmit = async (data) => {
@@ -24,9 +31,16 @@ const SignUp = () => {
 
     try {
       const res = await registerUser({ name, email, password });
+      console.log("res", res);
       dispatch(setCredentials({ ...res }));
-      navigate("/");
-    } catch (error) {}
+      if (!res.error) {
+        navigate("/");
+        toast.success("User create successfully");
+      }
+      toast.error(res?.error?.data?.message);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <div className="w-full h-screen flex items-center justify-center">
@@ -156,10 +170,10 @@ const SignUp = () => {
                   value: true,
                   message: "Password Required !!!",
                 },
-                pattern: {
-                  value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
-                  message: "Password Must be 8 char including a special char !!!",
-                },
+                // pattern: {
+                //   value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
+                //   message: "Password Must be 8 char including a special char !!!",
+                // },
               })}
             />
             <label className="level font-bold">

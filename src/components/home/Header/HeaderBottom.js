@@ -4,24 +4,46 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import products from "../../../staticData/products";
+import { useLogOutMutation } from "../../../redux/userApiSlice";
+import { logOutUser } from "../../../redux/authSlice";
+import { toast } from "react-toastify";
 
 const HeaderBottom = () => {
-  const { cartItems } = useSelector((state) => state.cart);
+  const { totalQuantity } = useSelector((state) => state.cart);
   const [show, setShow] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const navigate = useNavigate();
   const ref = useRef();
+  const dispatch = useDispatch();
+
+  const [logOut, { isLoadding }] = useLogOutMutation();
+  const { userInfo } = useSelector((state) => state.user);
+
+  //handel logout user
+  const handelLogoutUser = async () => {
+    const res = await logOut();
+    if (res.error) {
+      toast.error(res?.error?.data?.message || res.error);
+    }
+    dispatch(logOutUser());
+    toast.success("Logout user successfully");
+  };
+
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
-      // if (ref?.current?.contains(e.target)) {
-      //   setShow(true);
-      // } else {
-      //   setShow(false);
-      // }
+      // console.log(document.body.addEventListener);
+      // setShow(false);
+      if (ref?.current?.contains(e.target)) {
+        setShow(true);
+        setShowUser(false);
+      } else {
+        setShow(false);
+        // setShowUser(false);
+      }
     });
-  }, [show, ref]);
+  }, [show, ref, setShowUser]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -113,8 +135,14 @@ const HeaderBottom = () => {
             )}
           </div>
           <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-            <div onClick={() => setShowUser(!showUser)} className="flex">
-              <FaUser />
+            <div onClick={() => setShowUser(true)} className="flex">
+              {userInfo?.email ? (
+                <>{userInfo.name}</>
+              ) : (
+                <>
+                  <FaUser />
+                </>
+              )}
               <FaCaretDown />
             </div>
             {showUser && (
@@ -124,29 +152,44 @@ const HeaderBottom = () => {
                 transition={{ duration: 0.5 }}
                 className="absolute top-6 left-0 z-50 bg-primeColor w-44 text-[#767676] h-auto p-4 pb-6"
               >
-                <Link to="/signin">
-                  <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                    Login
-                  </li>
-                </Link>
-                <Link onClick={() => setShowUser(false)} to="/signup">
-                  <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                    Sign Up
-                  </li>
-                </Link>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Profile
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Others
-                </li>
+                {!userInfo?.email ? (
+                  <>
+                    {" "}
+                    <Link to="/signin">
+                      <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                        Login
+                      </li>
+                    </Link>
+                    <Link to="/signup">
+                      <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                        Sign Up
+                      </li>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <li
+                      onClick={() => handelLogoutUser()}
+                      className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer"
+                    >
+                      LogOut
+                    </li>
+
+                    <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                      Profile
+                    </li>
+                    <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                      Others
+                    </li>
+                  </>
+                )}
               </motion.ul>
             )}
             <Link to="/cart">
               <div className="relative">
                 <FaShoppingCart />
                 <span className="absolute font-titleFont top-2 right-3 text-xs w-4 h-4 flex items-center justify-center rounded-full bg-primeColor text-white">
-                  {cartItems?.length}
+                  {totalQuantity}
                 </span>
               </div>
             </Link>

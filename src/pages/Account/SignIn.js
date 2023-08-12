@@ -21,7 +21,9 @@ const SignIn = () => {
   const [login, { isLoading }] = useLoginMutation();
 
   useEffect(() => {
-    // navigate("/");
+    if (userInfo) {
+      navigate("/");
+    }
   }, [navigate, userInfo]);
 
   const onSubmit = async (data) => {
@@ -31,11 +33,17 @@ const SignIn = () => {
     try {
       const res = await login({ email, password });
       // console.log("res", res);
-      toast.success("salfsdlaksdjfl");
-      dispatch(setCredentials({ ...res }));
-      // navigate("/");
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message || res.error);
+        return;
+      }
+      const userData = res.data;
+      dispatch(setCredentials({ ...userData }));
+      navigate("/");
+      toast.success("User login successfully");
     } catch (err) {
-      toast.success("asdasd");
+      console.log("err in singin ", err);
     }
   };
   return (
@@ -198,10 +206,10 @@ const SignIn = () => {
                   value: true,
                   message: "Password Required !!!",
                 },
-                pattern: {
-                  value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
-                  message: "Password Must be 8 char including a special char !!!",
-                },
+                // pattern: {
+                //   value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
+                //   message: "Password Must be 8 char including a special char !!!",
+                // },
               })}
             />
             <label className="level font-bold">
