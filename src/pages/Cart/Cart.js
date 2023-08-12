@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
-import { resetCart } from "../../redux/cartSlice";
+import { resetCart } from "../../redux/slice/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();

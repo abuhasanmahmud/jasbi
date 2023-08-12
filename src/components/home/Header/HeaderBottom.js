@@ -6,8 +6,8 @@ import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import products from "../../../staticData/products";
-import { useLogOutMutation } from "../../../redux/userApiSlice";
-import { logOutUser } from "../../../redux/authSlice";
+import { useLogOutMutation } from "../../../redux/api/userApiSlice";
+import { logOutUser } from "../../../redux/slice/authSlice";
 import { toast } from "react-toastify";
 
 const HeaderBottom = () => {
@@ -119,7 +119,7 @@ const HeaderBottom = () => {
               >
                 {searchQuery &&
                   filteredProducts.map((item) => (
-                    <Link to={`/product/${item._id}`}>
+                    <Link key={item._id} to={`/product/${item._id}`}>
                       <div
                         key={item._id}
                         className="max-w-[600px] h-28 bg-gray-100 mb-3 flex items-center gap-3"

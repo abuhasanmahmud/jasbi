@@ -3,11 +3,11 @@ import { BsCheckCircleFill } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
 import { useForm } from "react-hook-form";
-import { useLoginMutation } from "../../redux/userApiSlice";
-import { setCredentials } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
+import { useLoginMutation } from "../../redux/api/userApiSlice";
+import { setCredentials } from "../../redux/slice/authSlice";
 const SignIn = () => {
   const {
     register,
