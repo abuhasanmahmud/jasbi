@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +17,9 @@ const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
-  }, []);
+  const location = useLocation();
+  const fromLocation = location?.state?.from?.pathname;
+  console.log("location", location, "fromLocation", fromLocation);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const onSubmit = async (data) => {
@@ -31,13 +29,15 @@ const SignUp = () => {
 
     try {
       const res = await registerUser({ name, email, password });
-      console.log("res", res);
-      dispatch(setCredentials({ ...res }));
-      if (!res.error) {
-        navigate("/");
-        toast.success("User create successfully");
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message || res.error);
+        return;
       }
-      toast.error(res?.error?.data?.message);
+      const userData = res.data;
+      dispatch(setCredentials({ ...userData }));
+      navigate(fromLocation ? fromLocation : "/");
+      toast.success("User login successfully");
     } catch (error) {
       console.log("error", error);
     }

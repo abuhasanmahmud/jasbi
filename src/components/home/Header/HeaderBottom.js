@@ -23,12 +23,16 @@ const HeaderBottom = () => {
 
   //handel logout user
   const handelLogoutUser = async () => {
-    const res = await logOut();
-    if (res.error) {
-      toast.error(res?.error?.data?.message || res.error);
+    try {
+      const res = await logOut();
+      if (res.error) {
+        toast.error(res?.error?.data?.message || res.error);
+      }
+      dispatch(logOutUser());
+      toast.success("Logout user successfully");
+    } catch (error) {
+      console.log("error", error);
     }
-    dispatch(logOutUser());
-    toast.success("Logout user successfully");
   };
 
   useEffect(() => {

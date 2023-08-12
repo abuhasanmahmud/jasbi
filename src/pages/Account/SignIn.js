@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/userApiSlice";
 import { setCredentials } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 const SignIn = () => {
   const {
     register,
@@ -20,11 +21,8 @@ const SignIn = () => {
 
   const [login, { isLoading }] = useLoginMutation();
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
-  }, [navigate, userInfo]);
+  const location = useLocation();
+  const fromLocation = location?.state?.from?.pathname;
 
   const onSubmit = async (data) => {
     const email = data.email;
@@ -40,7 +38,7 @@ const SignIn = () => {
       }
       const userData = res.data;
       dispatch(setCredentials({ ...userData }));
-      navigate("/");
+      navigate(fromLocation ? fromLocation : "/");
       toast.success("User login successfully");
     } catch (err) {
       console.log("err in singin ", err);
@@ -162,6 +160,7 @@ const SignIn = () => {
           </div>
           <input type="submit" />
         </form> */}
+
         <form className="w-100 mx-auto shadow-xl px-4 py-8 " onSubmit={handleSubmit(onSubmit)}>
           {/* register your input into the hook by invoking the "register" function */}
           <h1 className="font-titleFont underline underline-offset-4 decoration-[1px] font-semibold text-2xl mdl:text-3xl mb-4">
@@ -243,6 +242,12 @@ const SignIn = () => {
           >
             Sign In
           </button>
+          {isLoading && (
+            <>
+              {" "}
+              <Loader />
+            </>
+          )}
           <p className="text-sm text-center font-titleFont font-medium mt-4">
             Don't have an Account?{" "}
             <Link to="/signup">
