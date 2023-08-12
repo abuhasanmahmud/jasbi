@@ -17,7 +17,7 @@ function Items({ currentItems }) {
 
 const Pagination = ({ itemsPerPage }) => {
   const { products } = useSelector((state) => state.allProducts);
-  // console.log("products", products);
+  console.log("products", products);
 
   const [itemOffset, setItemOffset] = useState(0);
   const [itemStart, setItemStart] = useState(1);
