@@ -1,237 +1,171 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
+  const { cartItems, totalAmount, totalQuantity } = useSelector((state) => state.cart);
+  const shipping = 20;
+  const GrandTotal = shipping + totalAmount;
   return (
     <>
-      <div class="py-16 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
+      <div class="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
         <div class="flex flex-col justify-start items-start w-full space-y-9">
           <div class="flex justify-start flex-col items-start space-y-2">
-            <button class="flex flex-row items-center text-gray-600 dark:text-white hover:text-gray-500 space-x-1">
-              <svg
-                class="fill-stroke"
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M2.91681 7H11.0835"
-                  stroke="currentColor"
-                  stroke-width="0.666667"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M2.91681 7L5.25014 9.33333"
-                  stroke="currentColor"
-                  stroke-width="0.666667"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M2.91681 7.00002L5.25014 4.66669"
-                  stroke="currentColor"
-                  stroke-width="0.666667"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <p class="text-sm leading-none">Back</p>
-            </button>
             <p class="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800 dark:text-gray-50">
               Checkout
             </p>
             <p class="text-base leading-normal sm:leading-4 text-gray-600 dark:text-white">
-              {" "}
-              Home Electronics Headphones Cart Checkout
+              Home <span> > </span> Checkout
             </p>
           </div>
 
           <div class="flex flex-col xl:flex-row justify-center xl:justify-between space-y-6 xl:space-y-0 xl:space-x-6 w-full">
-            <div class="xl:w-3/5 flex flex-col sm:flex-row xl:flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-7 sm:py-0 xl:py-10 px-10 xl:w-full">
-              <div class="flex flex-col justify-start items-start w-full space-y-4">
-                <p class="text-xl md:text-2xl leading-normal text-gray-800 dark:text-gray-50">
-                  Logitech K251
-                </p>
-                <p class="text-base font-semibold leading-none text-gray-600 dark:text-white">$520.00</p>
-              </div>
-              <div class="mt-6 sm:mt-0 xl:my-10 xl:px-20 w-52 sm:w-96 xl:w-auto">
-                <img src="https://i.ibb.co/0GFzTP4/Rectangle-131.png" alt="headphones" />
+            <div class="p-8 bg-gray-100 dark:bg-gray-800 flex flex-col lg:w-full xl:w-3/5">
+              <form id="payment-form" method="POST" action="">
+                <section>
+                  <h2 class="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2 mb-8">
+                    Shipping & Billing Information
+                  </h2>
+                  <fieldset class="mb-3 bg-white  rounded text-gray-600">
+                    <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                      <span class="text-right px-2">Name</span>
+                      <input
+                        name="name"
+                        class="focus:outline-none px-3"
+                        placeholder="Try Odinsson"
+                        required=""
+                      />
+                    </label>
+                    <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                      <span class="text-right px-2">Email</span>
+                      <input
+                        name="email"
+                        type="email"
+                        class="focus:outline-none px-3"
+                        placeholder="try@example.com"
+                        required=""
+                      />
+                    </label>
+                    <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                      <span class="text-right px-2">Phone</span>
+                      <input
+                        name="Phone"
+                        class="focus:outline-none px-3"
+                        placeholder="10 Street XYZ 654"
+                      />
+                    </label>
+                    <label class="flex border-b border-gray-200 h-12 py-3 items-center">
+                      <span class="text-right px-2">Address</span>
+                      <input
+                        name="address"
+                        class="focus:outline-none px-3"
+                        placeholder="10 Street XYZ 654"
+                      />
+                    </label>
+                  </fieldset>
+                </section>
+              </form>
+              <div className="mt-8">
+                <div className="mb-3">
+                  <input id="card" type="radio" className="hover:cursor-pointer" name="payment" />
+                  <label
+                    for="card"
+                    class="mx-2 text-xl font-bold leading-4 text-gray-800 dark:text-gray-50] hover:cursor-pointer"
+                  >
+                    Card details
+                  </label>
+                </div>
+                <div class="mt-2 flex-col">
+                  <div>
+                    <input
+                      class="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="email"
+                      name=""
+                      id=""
+                      placeholder="0000 1234 6549 15151"
+                    />
+                  </div>
+                  <div class="flex-row flex">
+                    <input
+                      class="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="email"
+                      name=""
+                      id=""
+                      placeholder="MM/YY"
+                    />
+                    <input
+                      class="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="email"
+                      name=""
+                      id=""
+                      placeholder="CVC"
+                    />
+                  </div>
+                </div>
+                <div className="mt-10">
+                  <input id="cash" type="radio" className="hover:cursor-pointer " name="payment" />
+                  <label
+                    for="cash"
+                    class="mx-2 text-xl font-bold leading-4 text-gray-800 dark:text-gray-50 hover:cursor-pointer"
+                  >
+                    Cash On delivery
+                  </label>
+                  <p className="mt-2 ml-3">Pay with cash when your order is delivered.</p>
+                </div>
               </div>
             </div>
 
-            <div class="p-8 bg-gray-100 dark:bg-gray-800 flex flex-col lg:w-full xl:w-3/5">
-              <button class="border border-transparent hover:border-gray-300 bg-gray-900 dark:bg-white dark:hover:bg-gray-900 dark:hover:border-gray-900 dark:text-gray-900 dark:hover:text-white hover:bg-white text-white hover:text-gray-900 flex flex-row justify-center items-center space-x-2 py-4 rounded w-full">
-                <div>
-                  <svg
-                    class="fill-current"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.9099 4.27692C9.6499 4.27692 9.1174 4.87817 8.2399 4.87817C7.34021 4.87817 6.65396 4.28129 5.56208 4.28129C4.49333 4.28129 3.35365 4.93379 2.6299 6.04535C1.61365 7.61285 1.78615 10.565 3.43208 13.08C4.02083 13.9804 4.80708 14.99 5.83833 15.001H5.85708C6.75333 15.001 7.01958 14.4141 8.25302 14.4072H8.27177C9.48677 14.4072 9.73052 14.9975 10.623 14.9975H10.6418C11.673 14.9866 12.5015 13.8679 13.0902 12.971C13.514 12.326 13.6715 12.0022 13.9965 11.2725C11.6155 10.3688 11.233 6.99348 13.5877 5.69942C12.869 4.79942 11.859 4.27817 10.9068 4.27817L10.9099 4.27692Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M10.6338 1C9.88379 1.05094 9.00879 1.52844 8.49629 2.15188C8.03129 2.71688 7.64879 3.555 7.79879 4.36781H7.85879C8.65754 4.36781 9.47504 3.88688 9.95254 3.27063C10.4125 2.68406 10.7613 1.85281 10.6338 1V1Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-base leading-4">Pay</p>
-                </div>
-              </button>
-
-              <div class="flex flex-row justify-center items-center mt-6">
-                <hr class="border w-full" />
-                <p class="flex flex-shrink-0 px-4 text-base leading-4 text-gray-600 dark:text-white">
-                  or pay with card
-                </p>
-                <hr class="border w-full" />
-              </div>
-
-              <div class="mt-8">
-                <input
-                  class="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="email"
-                  name=""
-                  id=""
-                  placeholder="Email"
-                />
-              </div>
-
-              <label class="mt-8 text-base leading-4 text-gray-800 dark:text-gray-50">
-                Card details
-              </label>
-              <div class="mt-2 flex-col">
-                <div>
-                  <input
-                    class="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    name=""
-                    id=""
-                    placeholder="0000 1234 6549 15151"
-                  />
-                </div>
-                <div class="flex-row flex">
-                  <input
-                    class="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    name=""
-                    id=""
-                    placeholder="MM/YY"
-                  />
-                  <input
-                    class="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    name=""
-                    id=""
-                    placeholder="CVC"
-                  />
-                </div>
-              </div>
-
-              <label class="mt-8 text-base leading-4 text-gray-800 dark:text-gray-50">
-                Name on card
-              </label>
-              <div class="mt-2 flex-col">
-                <div>
-                  <input
-                    class="border rounded border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    name=""
-                    id=""
-                    placeholder="Name on card"
-                  />
-                </div>
-              </div>
-
-              <label class="mt-8 text-base leading-4 text-gray-800 dark:text-gray-50">
-                Country or region
-              </label>
-              <div class="mt-2 flex-col">
-                <div class="relative ">
-                  <button
-                    id="changetext"
-                    class="text-left border rounded-tr rounded-tl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600 bg-white"
-                    type="email"
-                    name=""
-                    id=""
-                  >
-                    United States
-                  </button>
-
-                  <img
-                    onclick="showMenu(true)"
-                    id="closeIcon"
-                    class="cursor-pointer absolute top-4 right-4 dark:hidden"
-                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/checkouts-1-svg1.svg"
-                    alt="Dropdown"
-                  />
-                  <img
-                    onclick="showMenu(true)"
-                    id="openIcon"
-                    class="cursor-pointer hidden transform rotate-180 absolute top-4 right-4 hidden transform rotate-180 dark:hidden"
-                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/checkouts-1-svg1.svg"
-                    alt="Dropdown"
-                  />
-                  <img
-                    onclick="showMenu(true)"
-                    id="closeIcon"
-                    class="cursor-pointer absolute top-4 right-4 hidden dark:block"
-                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/checkouts-1-svg1dark.svg"
-                    alt="Dropdown"
-                  />
-                  <img
-                    onclick="showMenu(true)"
-                    id="openIcon"
-                    class="cursor-pointer hidden transform rotate-180 absolute top-4 right-4 hidden dark:block"
-                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/checkouts-1-svg1dark.svg"
-                    alt="Dropdown"
-                  />
-                  <div
-                    id="dropdown"
-                    class=" hidden  z-10 w-full flex bg-gray-50 justify-start flex-col text-gray-600"
-                  >
-                    <div
-                      onclick="changeText('China')"
-                      class="cursor-pointer hover:bg-gray-800 hover:text-white px-4 py-2"
-                    >
-                      China
-                    </div>
-                    <div
-                      onclick="changeText('Russia')"
-                      class="cursor-pointer hover:bg-gray-800 hover:text-white px-4 py-2"
-                    >
-                      Russia
-                    </div>
-                    <div
-                      onclick="changeText('UK')"
-                      class="cursor-pointer hover:bg-gray-800 hover:text-white px-4 py-2"
-                    >
-                      UK
-                    </div>
+            <div class="xl:w-3/5 flex flex-col sm:flex-row xl:flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-6 sm:py-0 xl:py-10 px-10">
+              <div className="py-4">
+                {/* <ProductsOnSale /> */}
+                <h1 class="pb-8 border-b-2 text-xl font-bold text-gray-600 px-8">Order Summary</h1>
+                <ul class="py-6 border-b space-y-6 px-8 h-48 scroll-smooth  overflow-y-scroll	">
+                  {cartItems?.map((item) => (
+                    <li key={item._id} class="grid grid-cols-6 gap-2 border-b-1">
+                      <div class="col-span-1 self-center">
+                        <img src={item?.img} alt="Product" class="rounded w-full" />
+                      </div>
+                      <div class="flex flex-col col-span-3 pt-2">
+                        <span class="text-gray-600 text-md font-semi-bold">{item?.name}</span>
+                        <span class="text-gray-400 text-sm inline-block pt-2">{item?.brand}</span>
+                      </div>
+                      <div class="col-span-2 pt-3">
+                        <div class="flex items-center space-x-2 text-sm justify-between">
+                          <span class="text-gray-400">
+                            {item?.quantity} x {item?.price}
+                          </span>
+                          <span class="font-semibold inline-block">${item?.totalPrice}</span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div class="px-8 border-b">
+                  <div class="flex justify-between py-4 text-gray-600">
+                    <span className="font-semibold">Subtotal</span>
+                    <span class="font-semibold ">${totalAmount}</span>
+                  </div>
+                  <div class="flex justify-between py-4 text-gray-600">
+                    <span className="font-semibold">Shipping</span>
+                    <span class="font-semibold ">${shipping}</span>
+                  </div>
+                  <div class="flex justify-between py-4 text-gray-600">
+                    <span className="font-semibold">Discount</span>
+                    <span class="font-semibold ">-</span>
                   </div>
                 </div>
-                <input
-                  class="border rounded-bl rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="text"
-                  name=""
-                  id=""
-                  placeholder="ZIP"
-                />
-              </div>
-
-              <button class="mt-8 border border-transparent hover:border-gray-300 dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full">
-                <div>
-                  <p class="text-base leading-4">Pay $54652</p>
+                <div class="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
+                  <span>Total</span>
+                  <span>${GrandTotal}</span>
                 </div>
-              </button>
+                <button class="mt-8 border border-transparent hover:border-gray-300 dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full">
+                  <div>
+                    <Link to="/confirm-order">
+                      <p class="text-base leading-4 py">Place Order </p>
+                    </Link>
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
         </div>

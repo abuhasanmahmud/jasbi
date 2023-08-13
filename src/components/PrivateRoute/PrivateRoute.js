@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ children }) => {
   let location = useLocation();
   const { userInfo } = useSelector((state) => state.user);
   console.log("userInfo", userInfo?.email);
@@ -14,7 +14,7 @@ const PrivateRoute = () => {
     return <Navigate to="/signin" state={{ from: location }} />;
   }
 
-  return <Outlet />;
+  return children;
 };
 
 export default PrivateRoute;

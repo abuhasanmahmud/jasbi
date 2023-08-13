@@ -27,6 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Checkout from "./pages/Checkout/Checkout";
 import { useSelector } from "react-redux";
+import ConfirmOrderPage from "./components/Order/ConfirmOrderPage/ConfirmOrderPage";
 
 const Layout = () => {
   return (
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/confirm-order" element={<ConfirmOrderPage />}></Route>
         <Route
           path="/checkout"
           element={
