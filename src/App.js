@@ -55,7 +55,14 @@ const router = createBrowserRouter(
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
-        {/* <Route path="/checkout" element={<Checkout />}></Route> */}
+        <Route
+          path="/checkout"
+          element={
+            <PrivateRoute>
+              <Checkout />
+            </PrivateRoute>
+          }
+        ></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>
@@ -64,9 +71,10 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const { userInfo } = useSelector((state) => state.user);
   return (
     <div className="font-bodyFont">
-      <RouterProvider router={router} />
+      <RouterProvider router={router} user={userInfo} />
       <ToastContainer />
     </div>
   );
