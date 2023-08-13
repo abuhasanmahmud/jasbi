@@ -15,15 +15,31 @@ function Items({ currentItems }) {
   );
 }
 
-const Pagination = ({ itemsPerPage }) => {
+const Pagination = ({ itemsPerPage, shortSelected }) => {
   const { products } = useSelector((state) => state.allProducts);
-  console.log("products", products);
+  console.log("products", products, shortSelected);
+  let sv = shortSelected?.toString().replaceAll(" ", "").toLowerCase();
+  console.log("sv", sv);
+  let products2 = [...products];
+  products2.sort((a, b) => a.name - b.name);
+
+  if (shortSelected) {
+    if (sv === "a_zorder") {
+      products2?.sort((a, b) => (a.name > b.name ? 1 : -1));
+    } else if (sv === "z_aorder") {
+      products2?.sort((a, b) => (b.name > a.name ? 1 : -1));
+    } else if (sv === "low_highprice") {
+      products2?.sort((a, b) => (a.price > b.price ? 1 : -1));
+    } else if ((sv = "high_lowprice")) {
+      products2?.sort((a, b) => (b.price > a.price ? 1 : -1));
+    }
+  }
 
   const [itemOffset, setItemOffset] = useState(0);
   const [itemStart, setItemStart] = useState(1);
 
   const endOffset = itemOffset + itemsPerPage;
-  const currentItems = products.slice(itemOffset, endOffset);
+  const currentItems = products2?.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(products.length / itemsPerPage);
 
   const handlePageClick = (event) => {

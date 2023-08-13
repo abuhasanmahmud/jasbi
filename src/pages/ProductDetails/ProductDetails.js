@@ -3,10 +3,12 @@ import { useLocation, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import ProductInfo from "../../components/pageProps/productDetails/ProductInfo";
 import ProductsOnSale from "../../components/pageProps/productDetails/ProductsOnSale";
-import products from "../../staticData/products";
+// import products from "../../staticData/products";
+import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const { products } = useSelector((state) => state.allProducts);
   // console.log("id", id);
   const product = products.find((product) => product._id == id);
   // console.log("product", product);

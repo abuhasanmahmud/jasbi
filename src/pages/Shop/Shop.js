@@ -6,6 +6,7 @@ import ShopSideNav from "../../components/pageProps/shopPage/ShopSideNav";
 
 const Shop = () => {
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [shortSelected, setShortSelected] = useState("");
   const itemsPerPageFromBanner = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);
   };
@@ -19,8 +20,11 @@ const Shop = () => {
           <ShopSideNav />
         </div>
         <div className="w-full mdl:w-[80%] lgl:w-[75%] h-full flex flex-col gap-10">
-          <ProductBanner itemsPerPageFromBanner={itemsPerPageFromBanner} />
-          <Pagination itemsPerPage={itemsPerPage} />
+          <ProductBanner
+            setShortSelected={setShortSelected}
+            itemsPerPageFromBanner={itemsPerPageFromBanner}
+          />
+          <Pagination shortSelected={shortSelected} itemsPerPage={itemsPerPage} />
         </div>
       </div>
       {/* ================= Products End here ===================== */}

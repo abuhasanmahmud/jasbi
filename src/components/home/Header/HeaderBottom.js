@@ -5,7 +5,7 @@ import { FaSearch, FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 import Flex from "../../designLayouts/Flex";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import products from "../../../staticData/products";
+// import products from "../../../staticData/products";
 import { useLogOutMutation } from "../../../redux/api/userApiSlice";
 import { logOutUser } from "../../../redux/slice/authSlice";
 import { toast } from "react-toastify";
@@ -56,6 +56,8 @@ const HeaderBottom = () => {
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  const { products } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
     const filtered = products.filter((item) =>
