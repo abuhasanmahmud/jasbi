@@ -1,7 +1,15 @@
 import React from "react";
-
+import orderImg from "../../../assets/images/confirmOrder.png";
 const ConfirmOrderPage = () => {
-  return <div>thank you for your order</div>;
+  return (
+    <>
+      <div>
+        <div>
+          <img src={orderImg} alt="" />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ConfirmOrderPage;

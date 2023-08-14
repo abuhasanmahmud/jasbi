@@ -19,15 +19,17 @@ import Contact from "./pages/Contact/Contact";
 import Home from "./pages/Home/Home";
 import Journal from "./pages/Journal/Journal";
 import Offer from "./pages/Offer/Offer";
-import Payment from "./pages/payment/Payment";
+
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Shop from "./pages/Shop/Shop";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Checkout from "./pages/Checkout/Checkout";
 import { useSelector } from "react-redux";
 import ConfirmOrderPage from "./components/Order/ConfirmOrderPage/ConfirmOrderPage";
+import UserProfile from "./pages/UserProfile/UserProfile";
+import Category from "./pages/Category/Category";
 
 const Layout = () => {
   return (
@@ -57,6 +59,8 @@ const router = createBrowserRouter(
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/confirm-order" element={<ConfirmOrderPage />}></Route>
+        <Route path="/user-profile" element={<UserProfile />}></Route>
+        <Route path="/category" element={<Category />}></Route>
         <Route
           path="/checkout"
           element={

@@ -31,7 +31,7 @@ const Footer = () => {
     <div className="w-full bg-[#F5F5F3] py-20">
       <div className="max-w-container mx-auto grid grid-cols-1 md:grid-cols-2  xl:grid-cols-6 px-4 gap-10">
         <div className="col-span-2">
-          <FooterListTitle title=" More about Orebi Shop" />
+          <FooterListTitle title=" More about jasBi Shop" />
           <div className="flex flex-col gap-6">
             <ul className="flex items-center gap-2">
               <a href="https://www.youtube.com/@reactjsBD" target="_blank" rel="noreferrer">

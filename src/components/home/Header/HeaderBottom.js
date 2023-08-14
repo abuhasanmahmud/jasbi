@@ -60,7 +60,7 @@ const HeaderBottom = () => {
   const { products } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
-    const filtered = products.filter((item) =>
+    const filtered = products?.filter((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -141,7 +141,7 @@ const HeaderBottom = () => {
             )}
           </div>
           <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-            <div onClick={() => setShowUser(true)} className="flex">
+            <div onClick={() => setShowUser(!false)} className="flex">
               {userInfo?.email ? (
                 <>{userInfo.name}</>
               ) : (

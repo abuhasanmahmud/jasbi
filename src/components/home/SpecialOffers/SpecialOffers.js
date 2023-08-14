@@ -1,11 +1,9 @@
 import React from "react";
 import Heading from "../Products/Heading";
 import Product from "../Products/Product";
-import products2 from "../../../staticData/products";
 import { useSelector } from "react-redux";
 
 const SpecialOffers = () => {
-  const specialOffers2 = products2.slice(10, 20);
   const { products } = useSelector((state) => state.allProducts);
   const specialOffer = products?.filter((product) => product.off > 1);
   // console.log("specialOffer", specialOffer);

@@ -1,9 +1,10 @@
 import React from "react";
-// import { SplOfferData } from "../../../constants";
-import products from "./../../../staticData/products";
+import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
 
 const ProductsOnSale = () => {
+  const { products } = useSelector((state) => state.allProducts);
   const SplOfferData = products?.slice(0, 10);
   return (
     <div>

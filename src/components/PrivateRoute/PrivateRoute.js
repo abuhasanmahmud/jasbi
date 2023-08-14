@@ -5,7 +5,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 const PrivateRoute = ({ children }) => {
   let location = useLocation();
   const { userInfo } = useSelector((state) => state.user);
-  console.log("userInfo", userInfo?.email);
+  // console.log("userInfo", userInfo?.email);
   if (!userInfo?.email) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them

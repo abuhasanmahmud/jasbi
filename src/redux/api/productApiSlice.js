@@ -5,7 +5,7 @@ const PRODUCT_URL = "/api/products";
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allProduct: builder.query({
-      query: (data2) => ({
+      query: (data) => ({
         url: `${PRODUCT_URL}`,
       }),
     }),

@@ -32,7 +32,10 @@ const Header = () => {
         <Flex className="flex items-center justify-between h-full">
           <Link to="/">
             <div>
-              <Image className="w-20 object-cover" imgSrc={logo} />
+              {/* <Image className="w-20 object-cover" imgSrc={logo} /> */}
+              <p className="text-3xl font-bold text-gray-700">
+                Jas<span className="font-extrabold text-gray-900 ">B</span>i
+              </p>
             </div>
           </Link>
           <div>
@@ -47,7 +50,7 @@ const Header = () => {
                   {navBarList.map(({ _id, title, link }) => (
                     <NavLink
                       key={_id}
-                      className="flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base text-[#767676] hover:underline underline-offset-[4px] decoration-[1px] hover:text-[#262626] md:border-r-[2px] border-r-gray-300 hoverEffect last:border-r-0"
+                      className="flex font-normal hover:font-bold w-20 h-6 justify-center items-center px-12 text-base text-[#767676] hover:underline underline-offset-[4px] decoration-[1px] hover:text-[#262626]   hoverEffect last:border-r-0"
                       to={link}
                       state={{ data: location.pathname.split("/")[1] }}
                     >
@@ -70,11 +73,7 @@ const Header = () => {
                   className="w-[80%] h-full relative"
                 >
                   <div className="w-full h-full bg-primeColor p-6">
-                    <img
-                      className="w-28 mb-6"
-                      src={logoLight}
-                      alt="logoLight"
-                    />
+                    <img className="w-28 mb-6" src={logoLight} alt="logoLight" />
                     <ul className="text-gray-200 flex flex-col gap-2">
                       {navBarList.map((item) => (
                         <li
@@ -96,8 +95,7 @@ const Header = () => {
                         onClick={() => setCategory(!category)}
                         className="flex justify-between text-base cursor-pointer items-center font-titleFont mb-2"
                       >
-                        Shop by Category{" "}
-                        <span className="text-lg">{category ? "-" : "+"}</span>
+                        Shop by Category <span className="text-lg">{category ? "-" : "+"}</span>
                       </h1>
                       {category && (
                         <motion.ul
