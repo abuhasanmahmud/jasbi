@@ -1,9 +1,17 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAllOrderQuery, useCreateOrderMutation } from "../../redux/api/orderApiSlice";
+import { getAllorder } from "../../redux/slice/orderSlice";
+import { toast } from "react-toastify";
+import { resetCart } from "../../redux/slice/cartSlice";
 
 const Checkout = () => {
+  const [cardPayment, setCardPayment] = useState(false);
+  console.log("cardpayment", cardPayment);
+  const navigate = useNavigate();
+  const [reload, setReload] = useState(false);
   const { cartItems, totalAmount, totalQuantity } = useSelector((state) => state.cart);
   const shipping = 20;
   const GrandTotal = shipping + totalAmount;
@@ -11,23 +19,47 @@ const Checkout = () => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     mode: "onBlur",
   });
+  const dispatch = useDispatch();
 
-  const {
-    register: register2,
-    formState: { errors: errors2 },
-    handleSubmit: handleSubmit2,
-  } = useForm({
-    mode: "onBlur",
-  });
-  const formRef = useRef();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
-  const handelShippingInfo = (data) => {
-    console.log("data", data);
+  const { userInfo } = useSelector((state) => state.user);
+
+  const handelShippingInfo = async (shippingData) => {
+    // console.log("data", data);
+    const orderData = {
+      user: userInfo?._id,
+      cart: [...cartItems],
+      shippingInfo: {
+        name: shippingData.name,
+        email: shippingData.email,
+        address: shippingData.address,
+        contact: shippingData.phone,
+      },
+      paymentMethod: shippingData.payment,
+      subTotal: totalAmount,
+      total: GrandTotal,
+      status: "Pending",
+    };
+    // console.log("order data", orderData);
+
+    try {
+      const res = await createOrder({ ...orderData });
+      // console.log("res", res);
+      if (res.data) {
+        toast.success("Your order is successfully confirm");
+        navigate("/confirm-order");
+        dispatch(resetCart());
+      }
+    } catch (error) {
+      console.log("error in checkout", error);
+    }
   };
-
+  useAllOrderQuery();
   return (
     <>
       <div className="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
@@ -63,77 +95,130 @@ const Checkout = () => {
                           },
                         })}
                       />
+
                       {errors?.name?.type === "required" && (
-                        <span className="label-text-alt text-red-500">{errors?.name?.message}</span>
+                        <span className="label-text-alt text-red-500 font-bold">
+                          {errors?.name?.message}
+                        </span>
                       )}
                     </label>
+
                     <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                       <span className="text-right px-2">Email</span>
                       <input
-                        name="email"
                         type="email"
                         className="focus:outline-none px-3"
-                        placeholder="try@example.com"
-                        required=""
+                        placeholder="your email"
+                        {...register("email", {
+                          required: {
+                            value: true,
+                            message: "email Required !!!",
+                          },
+                        })}
                       />
+                      {errors?.email?.type === "required" && (
+                        <span className="label-text-alt text-red-500 font-bold">
+                          {errors?.email?.message}
+                        </span>
+                      )}
                     </label>
                     <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                       <span className="text-right px-2">Phone</span>
                       <input
-                        name="Phone"
+                        type="text"
                         className="focus:outline-none px-3"
-                        placeholder="10 Street XYZ 654"
+                        placeholder="your phone"
+                        {...register("phone", {
+                          required: {
+                            value: true,
+                            message: "phone Required !!!",
+                          },
+                        })}
                       />
+                      {errors?.phone?.type === "required" && (
+                        <span className="label-text-alt text-red-500 font-bold">
+                          {errors?.phone?.message}
+                        </span>
+                      )}
                     </label>
                     <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                       <span className="text-right px-2">Address</span>
                       <input
-                        name="address"
+                        type="text"
                         className="focus:outline-none px-3"
-                        placeholder="10 Street XYZ 654"
+                        placeholder="your address"
+                        {...register("address", {
+                          required: {
+                            value: true,
+                            message: "address Required !!!",
+                          },
+                        })}
                       />
+                      {errors?.address?.type === "required" && (
+                        <span className="label-text-alt text-red-500 font-bold">
+                          {errors?.address?.message}
+                        </span>
+                      )}
                     </label>
                   </fieldset>
                 </section>
                 <div className="mt-8">
                   <div className="mb-3">
-                    <input id="card" type="radio" className="hover:cursor-pointer" name="payment" />
+                    <input
+                      onClick={() => setCardPayment(true)}
+                      id="card"
+                      type="radio"
+                      className="hover:cursor-pointer"
+                      name="payment"
+                      value="card"
+                      {...register("payment")}
+                    />
                     <label
                       htmlFor="card"
                       className="mx-2 text-xl font-bold leading-4 text-gray-800 dark:text-gray-50] hover:cursor-pointer"
                     >
-                      Card details
+                      Payment By Card
                     </label>
                   </div>
-                  <div className="mt-2 flex-col">
-                    <div>
-                      <input
-                        className="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
-                        name=""
-                        id=""
-                        placeholder="0000 1234 6549 15151"
-                      />
+                  {cardPayment && (
+                    <div className="mt-2 flex-col">
+                      <div>
+                        <input
+                          className="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                          type="email"
+                          name=""
+                          id=""
+                          placeholder="0000 1234 6549 15151"
+                        />
+                      </div>
+                      <div className="flex-row flex">
+                        <input
+                          className="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                          type="email"
+                          name=""
+                          id=""
+                          placeholder="MM/YY"
+                        />
+                        <input
+                          className="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                          type="email"
+                          name=""
+                          id=""
+                          placeholder="CVC"
+                        />
+                      </div>
                     </div>
-                    <div className="flex-row flex">
-                      <input
-                        className="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
-                        name=""
-                        id=""
-                        placeholder="MM/YY"
-                      />
-                      <input
-                        className="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
-                        name=""
-                        id=""
-                        placeholder="CVC"
-                      />
-                    </div>
-                  </div>
+                  )}
                   <div className="mt-10">
-                    <input id="cash" type="radio" className="hover:cursor-pointer " name="payment" />
+                    <input
+                      onClick={() => setCardPayment(false)}
+                      id="cash"
+                      type="radio"
+                      className="hover:cursor-pointer "
+                      name="payment"
+                      value="cash"
+                      {...register("payment")}
+                    />
                     <label
                       htmlFor="cash"
                       className="mx-2 text-xl font-bold leading-4 text-gray-800 dark:text-gray-50 hover:cursor-pointer"
@@ -144,6 +229,7 @@ const Checkout = () => {
                   </div>
                 </div>
                 <button
+                  disabled={isLoading}
                   type="submit"
                   className="mt-8 border border-transparent hover:border-gray-300 dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full"
                 >

@@ -2,7 +2,7 @@ import { apiSlice } from "./apiSlice";
 
 const ORDER_URL = "/api/orders";
 
-export const orderApiSlice = apiSlice.enhanceEndpoints({
+export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allOrder: builder.query({
       query: (data) => ({

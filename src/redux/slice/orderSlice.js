@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  orders: [],
+  orders: {},
   loadding: true,
 };
 
@@ -11,7 +11,8 @@ const orderSlice = createSlice({
 
   reducers: {
     getAllorder: (state, action) => {
-      state.products = action.payload;
+      // console.log("action in order slice", action.payload);
+      state.orders = action.payload;
       state.loadding = false;
     },
   },
