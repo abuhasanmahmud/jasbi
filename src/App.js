@@ -31,6 +31,7 @@ import ConfirmOrderPage from "./components/Order/ConfirmOrderPage/ConfirmOrderPa
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Category from "./pages/Category/Category";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
+import StripChekout from "./pages/StripeCheckout/StripCheckout";
 
 const Layout = () => {
   return (
@@ -48,6 +49,7 @@ const Layout = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
+      <Route path="/stripe-checkout" element={<StripChekout />}></Route>
       <Route path="/" element={<Layout />}>
         {/* ==================== Header Navlink Start here =================== */}
         <Route index element={<Home />}></Route>
@@ -59,7 +61,7 @@ const router = createBrowserRouter(
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/checkout-success" element={<CheckOutSuccess />}></Route>
+
         <Route path="/confirm-order" element={<ConfirmOrderPage />}></Route>
         <Route path="/user-profile" element={<UserProfile />}></Route>
         <Route path="/category" element={<Category />}></Route>

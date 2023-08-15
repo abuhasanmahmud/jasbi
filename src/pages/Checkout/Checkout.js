@@ -53,19 +53,13 @@ const Checkout = () => {
     // console.log("order data", orderData);
 
     try {
-      const payment = await createPayment({ cartItems, userId: userInfo._id });
-      console.log("payment", payment);
-
-      if (payment.data.url) {
-        window.location.href = payment.data.url;
+      const res = await createOrder({ ...orderData });
+      console.log("res", res);
+      if (res.data) {
+        toast.success("Your order is successfully confirm");
+        navigate("/confirm-order");
+        dispatch(resetCart());
       }
-      // const res = await createOrder({ ...orderData });
-      // console.log("res", res);
-      // if (res.data) {
-      //   toast.success("Your order is successfully confirm");
-      // navigate("/confirm-order");
-      // dispatch(resetCart());
-      // }
     } catch (error) {
       console.log("error in checkout", error);
     }
