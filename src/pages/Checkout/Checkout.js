@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAllOrderQuery, useCreateOrderMutation } from "../../redux/api/orderApiSlice";
+import {
+  useAllOrderQuery,
+  useCreateOrderMutation,
+  useCreatePaymentMutation,
+} from "../../redux/api/orderApiSlice";
 import { getAllorder } from "../../redux/slice/orderSlice";
 import { toast } from "react-toastify";
 import { resetCart } from "../../redux/slice/cartSlice";
@@ -25,7 +29,8 @@ const Checkout = () => {
   });
   const dispatch = useDispatch();
 
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrder] = useCreateOrderMutation();
+  const [createPayment] = useCreatePaymentMutation();
 
   const { userInfo } = useSelector((state) => state.user);
 
@@ -48,18 +53,24 @@ const Checkout = () => {
     // console.log("order data", orderData);
 
     try {
-      const res = await createOrder({ ...orderData });
-      // console.log("res", res);
-      if (res.data) {
-        toast.success("Your order is successfully confirm");
-        navigate("/confirm-order");
-        dispatch(resetCart());
+      const payment = await createPayment({ cartItems, userId: userInfo._id });
+      console.log("payment", payment);
+
+      if (payment.data.url) {
+        window.location.href = payment.data.url;
       }
+      // const res = await createOrder({ ...orderData });
+      // console.log("res", res);
+      // if (res.data) {
+      //   toast.success("Your order is successfully confirm");
+      // navigate("/confirm-order");
+      // dispatch(resetCart());
+      // }
     } catch (error) {
       console.log("error in checkout", error);
     }
   };
-  useAllOrderQuery();
+  // useAllOrderQuery();
   return (
     <>
       <div className="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
@@ -229,7 +240,6 @@ const Checkout = () => {
                   </div>
                 </div>
                 <button
-                  disabled={isLoading}
                   type="submit"
                   className="mt-8 border border-transparent hover:border-gray-300 dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full"
                 >

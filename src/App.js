@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import ConfirmOrderPage from "./components/Order/ConfirmOrderPage/ConfirmOrderPage";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Category from "./pages/Category/Category";
+import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 
 const Layout = () => {
   return (
@@ -58,6 +59,7 @@ const router = createBrowserRouter(
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/checkout-success" element={<CheckOutSuccess />}></Route>
         <Route path="/confirm-order" element={<ConfirmOrderPage />}></Route>
         <Route path="/user-profile" element={<UserProfile />}></Route>
         <Route path="/category" element={<Category />}></Route>

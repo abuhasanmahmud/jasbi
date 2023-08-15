@@ -16,7 +16,14 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createPayment: builder.mutation({
+      query: (data) => ({
+        url: `${ORDER_URL}/create-checkout-session`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useAllOrderQuery, useCreateOrderMutation } = orderApiSlice;
+export const { useAllOrderQuery, useCreateOrderMutation, useCreatePaymentMutation } = orderApiSlice;
