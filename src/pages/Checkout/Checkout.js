@@ -35,6 +35,7 @@ const Checkout = () => {
     mode: "onBlur",
   });
   const dispatch = useDispatch();
+  // console.log("errors in hook form", errors);
 
   const [createOrder] = useCreateOrderMutation();
   const [createPayment] = useCreatePaymentMutation();
@@ -42,16 +43,6 @@ const Checkout = () => {
   const { userInfo } = useSelector((state) => state.user);
 
   const handelShippingInfo = async (shippingData) => {
-    if (cashPayment !== "cash" || cardPayment !== "card") {
-      // console.log("not click card or cash");
-      toast.error("Select a payment method");
-      return;
-    } else {
-      if (cashPayment === "cash") {
-        console.log("cash Payment");
-        return;
-      }
-    }
     // console.log("data", data);
     const orderData = {
       user: userInfo?._id,
@@ -70,6 +61,28 @@ const Checkout = () => {
     // console.log("order data", orderData);
 
     try {
+      const lineItems = cartItems?.map((item) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price * 100, // because stripe interprets price in cents
+          },
+          quantity: item.quantity,
+        };
+      });
+
+      if (cashPayment !== "cash") {
+        const { data } = await createPayment({ lineItems });
+
+        console.log("data", data);
+
+        const stripe = await stripePromise;
+
+        await stripe.redirectToCheckout({ sessionId: data.id });
+      }
       const res = await createOrder({ ...orderData });
       console.log("res", res);
       if (res.data) {
@@ -84,32 +97,11 @@ const Checkout = () => {
   // useAllOrderQuery();
 
   const handelCheckout = async () => {
-    const lineItems = cartItems?.map((item) => {
-      return {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: item.name,
-          },
-          unit_amount: item.price * 100, // because stripe interprets price in cents
-        },
-        quantity: item.quantity,
-      };
-    });
-
     // const { data } = await axios.post("http://localhost:4000/api/orders/create-checkout-session", {
     //   lineItems: lineItems,
     // });
-    const { data } = await createPayment({ lineItems });
-
-    console.log("data", data);
-
-    const stripe = await stripePromise;
-
-    await stripe.redirectToCheckout({ sessionId: data.id });
   };
 
-  const [s, setS] = useState(false);
   return (
     <>
       <div className="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
@@ -221,14 +213,20 @@ const Checkout = () => {
                       className="hover:cursor-pointer"
                       name="payment"
                       value="card"
-                      {...register("payment")}
+                      {...register("payment", { required: true, message: "paymnet method required" })}
                     />
+
                     <label
                       htmlFor="card"
                       className="mx-2 text-xl font-bold leading-4 text-gray-800 dark:text-gray-50] hover:cursor-pointer"
                     >
                       Payment By Card
                     </label>
+                    {errors?.payment && (
+                      <p className="label-text-alt text-red-500 font-bold">
+                        please select a payment method
+                      </p>
+                    )}
                   </div>
                   {/* {cardPayment && (
                     <div className="mt-2 flex-col">
@@ -280,12 +278,11 @@ const Checkout = () => {
                 </div>
                 <button
                   data-tooltip-target="tooltip-default"
-                  disabled={cashPayment != "cash" || cardPayment != "card"}
                   type="submit"
-                  className=" mt-8 border bg-gray-400 flex justify-center items-center py-4 rounded w-full"
+                  className=" mt-8 border border-transparent dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full"
                 >
                   <div>
-                    <p className="text-base leading-4 py text-bold ">Place Order </p>
+                    <p className="text-base leading-4 py">Place Order </p>
                   </div>
                 </button>
               </form>
