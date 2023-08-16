@@ -43,7 +43,7 @@ const Checkout = () => {
 
   const handelShippingInfo = async (shippingData) => {
     if (cashPayment !== "cash" || cardPayment !== "card") {
-      // console.log("not click card or cash");
+      console.log("not click card or cash");
       toast.error("Select a payment method");
       return;
     } else {
