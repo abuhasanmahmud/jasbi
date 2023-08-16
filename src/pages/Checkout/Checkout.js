@@ -68,7 +68,7 @@ const Checkout = () => {
   return (
     <>
       <div className="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
-        <div className="flex flex-col justify-start items-start w-full space-y-9">
+        <div className="flex flex-col justify-start items-start w-full space-y-9 ">
           <div className="flex justify-start flex-col items-start space-y-2">
             <p className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800 dark:text-gray-50">
               Checkout
@@ -78,7 +78,7 @@ const Checkout = () => {
             </p>
           </div>
 
-          <div className="flex flex-col xl:flex-row justify-center xl:justify-between space-y-6 xl:space-y-0 xl:space-x-6 w-full">
+          <div className="flex flex-col xl:flex-row lg:flex-col-reverse justify-center xl:justify-between space-y-6 xl:space-y-0 xl:space-x-6 w-full">
             <div className="p-8 bg-gray-100 dark:bg-gray-800 flex flex-col lg:w-full xl:w-3/5">
               <form onSubmit={handleSubmit(handelShippingInfo)} key={1}>
                 <section>

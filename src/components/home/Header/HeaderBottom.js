@@ -35,20 +35,6 @@ const HeaderBottom = () => {
     }
   };
 
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      // console.log(document.body.addEventListener);
-      // setShow(false);
-      if (ref?.current?.contains(e.target)) {
-        setShow(true);
-        setShowUser(false);
-      } else {
-        setShow(false);
-        // setShowUser(false);
-      }
-    });
-  }, [show, ref, setShowUser]);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -64,15 +50,40 @@ const HeaderBottom = () => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filtered);
-  }, [searchQuery]);
+  }, [searchQuery, products]);
 
+  // console.log("filteredProducts", filteredProducts);
+
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (ref.current.contains(e.target)) {
+        setShowUser(true);
+        setShow(false);
+      } else {
+        setShowUser(false);
+      }
+    });
+  }, [show, ref, showUser]);
+
+  const handelCategoryAndUserMenu = () => {
+    setShow(true);
+    setShowUser(false);
+  };
+  const handelCategoryAndUserMenu2 = () => {
+    setShow(false);
+    setShowUser(true);
+  };
+
+  const [ct, setCt] = useState("");
+
+  // console.log("show", show, "show User", showUser);
   return (
     <div className="w-full bg-[#F5F5F3] relative">
       <div className="max-w-container mx-auto">
         <Flex className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full px-4 pb-4 lg:pb-0 h-full lg:h-24">
           <div
-            onClick={() => setShow(!show)}
             ref={ref}
+            onClick={() => setShow(!show)}
             className="flex h-14 cursor-pointer items-center gap-2 text-primeColor"
           >
             <HiOutlineMenuAlt4 className="w-5 h-5" />
@@ -115,7 +126,7 @@ const HeaderBottom = () => {
               placeholder="Search your products here"
             />
             <FaSearch className="w-5 h-5" />
-            {searchQuery && (
+            {filteredProducts?.length > 0 && searchQuery && (
               <div
                 className={`w-full mx-auto h-96 bg-white top-16 absolute left-0 z-50 overflow-y-scroll shadow-2xl scrollbar-hide cursor-pointer`}
               >
@@ -141,7 +152,7 @@ const HeaderBottom = () => {
             )}
           </div>
           <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-            <div onClick={() => setShowUser(!false)} className="flex">
+            <div ref={ref} onClick={() => setShowUser(!showUser)} className="flex">
               {userInfo?.email ? (
                 <>{userInfo.name}</>
               ) : (
