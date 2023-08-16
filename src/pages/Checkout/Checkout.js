@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+
 import {
   useAllOrderQuery,
   useCreateOrderMutation,
@@ -12,8 +15,12 @@ import { toast } from "react-toastify";
 import { resetCart } from "../../redux/slice/cartSlice";
 
 const Checkout = () => {
-  const [cardPayment, setCardPayment] = useState(false);
-  console.log("cardpayment", cardPayment);
+  const stripePromise = loadStripe(
+    "pk_test_51NfDqIJW5wgALcATuxhBlDv2HYbU83wzyQMJmiouWeo7foYqPv2OHVZBcwkhwBqcdj7LbXlmsSS2w9bxYsnpUszN00xKE14T5c"
+  );
+  const [cardPayment, setCardPayment] = useState("");
+  const [cashPayment, setCashPayment] = useState("");
+  // console.log("cardpayment .....", cardPayment, cashPayment);
   const navigate = useNavigate();
   const [reload, setReload] = useState(false);
   const { cartItems, totalAmount, totalQuantity } = useSelector((state) => state.cart);
@@ -35,6 +42,16 @@ const Checkout = () => {
   const { userInfo } = useSelector((state) => state.user);
 
   const handelShippingInfo = async (shippingData) => {
+    if (cashPayment !== "cash" || cardPayment !== "card") {
+      console.log("not click card or cash");
+      toast.error("Select a payment method");
+      return;
+    } else {
+      if (cashPayment === "cash") {
+        console.log("cash Payment");
+        return;
+      }
+    }
     // console.log("data", data);
     const orderData = {
       user: userInfo?._id,
@@ -65,6 +82,34 @@ const Checkout = () => {
     }
   };
   // useAllOrderQuery();
+
+  const handelCheckout = async () => {
+    const lineItems = cartItems?.map((item) => {
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: item.price * 100, // because stripe interprets price in cents
+        },
+        quantity: item.quantity,
+      };
+    });
+
+    // const { data } = await axios.post("http://localhost:4000/api/orders/create-checkout-session", {
+    //   lineItems: lineItems,
+    // });
+    const { data } = await createPayment({ lineItems });
+
+    console.log("data", data);
+
+    const stripe = await stripePromise;
+
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  };
+
+  const [s, setS] = useState(false);
   return (
     <>
       <div className="py-12 px-4 md:px-6 2xl:px-0 flex justify-center items-center 2xl:mx-auto 2xl:container">
@@ -170,7 +215,7 @@ const Checkout = () => {
                 <div className="mt-8">
                   <div className="mb-3">
                     <input
-                      onClick={() => setCardPayment(true)}
+                      onClick={(e) => setCardPayment(e.target.value)}
                       id="card"
                       type="radio"
                       className="hover:cursor-pointer"
@@ -185,7 +230,7 @@ const Checkout = () => {
                       Payment By Card
                     </label>
                   </div>
-                  {cardPayment && (
+                  {/* {cardPayment && (
                     <div className="mt-2 flex-col">
                       <div>
                         <input
@@ -213,10 +258,10 @@ const Checkout = () => {
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
                   <div className="mt-10">
                     <input
-                      onClick={() => setCardPayment(false)}
+                      onClick={(e) => setCashPayment(e.target.value)}
                       id="cash"
                       type="radio"
                       className="hover:cursor-pointer "
@@ -234,11 +279,13 @@ const Checkout = () => {
                   </div>
                 </div>
                 <button
+                  data-tooltip-target="tooltip-default"
+                  disabled={cashPayment != "cash" || cardPayment != "card"}
                   type="submit"
-                  className="mt-8 border border-transparent hover:border-gray-300 dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:hover:text-white dark:border-transparent bg-gray-900 hover:bg-white text-white hover:text-gray-900 flex justify-center items-center py-4 rounded w-full"
+                  className=" mt-8 border bg-gray-400 flex justify-center items-center py-4 rounded w-full"
                 >
                   <div>
-                    <p className="text-base leading-4 py">Place Order </p>
+                    <p className="text-base leading-4 py text-bold ">Place Order </p>
                   </div>
                 </button>
               </form>
@@ -287,6 +334,9 @@ const Checkout = () => {
                   <span>Total</span>
                   <span>${GrandTotal}</span>
                 </div>
+                <button className="btn btn-lg " onClick={() => handelCheckout()}>
+                  Check out
+                </button>
               </div>
             </div>
           </div>

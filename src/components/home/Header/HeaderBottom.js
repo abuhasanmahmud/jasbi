@@ -18,6 +18,16 @@ const HeaderBottom = () => {
   const ref = useRef();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (ref.current.contains(e.target)) {
+        setShowUser(true);
+      } else {
+        setShowUser(false);
+      }
+    });
+  }, [showUser, ref]);
+
   const [logOut, { isLoadding }] = useLogOutMutation();
   const { userInfo } = useSelector((state) => state.user);
 
@@ -54,17 +64,6 @@ const HeaderBottom = () => {
 
   // console.log("filteredProducts", filteredProducts);
 
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      if (ref.current.contains(e.target)) {
-        setShowUser(true);
-        setShow(false);
-      } else {
-        setShowUser(false);
-      }
-    });
-  }, [show, ref, showUser]);
-
   const handelCategoryAndUserMenu = () => {
     setShow(true);
     setShowUser(false);
@@ -81,41 +80,8 @@ const HeaderBottom = () => {
     <div className="w-full bg-[#F5F5F3] relative">
       <div className="max-w-container mx-auto">
         <Flex className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full px-4 pb-4 lg:pb-0 h-full lg:h-24">
-          <div
-            ref={ref}
-            onClick={() => setShow(!show)}
-            className="flex h-14 cursor-pointer items-center gap-2 text-primeColor"
-          >
-            <HiOutlineMenuAlt4 className="w-5 h-5" />
+          <div className="flex h-14 cursor-pointer items-center gap-2 text-primeColor">
             <p className="text-[14px] font-normal">Shop by Category</p>
-
-            {show && (
-              <motion.ul
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="absolute top-36 z-50 bg-primeColor w-auto text-[#767676] h-auto p-4 pb-6"
-              >
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Accessories
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Furniture
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Electronics
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Clothes
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Bags
-                </li>
-                <li className="text-gray-400 px-4 py-1 border-b-[1px] border-b-gray-400  hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                  Home appliances
-                </li>
-              </motion.ul>
-            )}
           </div>
           <div className="relative w-full lg:w-[600px] h-[50px] text-base text-primeColor bg-white flex items-center gap-2 justify-between px-6 rounded-xl">
             <input
@@ -152,7 +118,7 @@ const HeaderBottom = () => {
             )}
           </div>
           <div className="flex gap-4 mt-2 lg:mt-0 items-center pr-6 cursor-pointer relative">
-            <div ref={ref} onClick={() => setShowUser(!showUser)} className="flex">
+            <div onClick={() => setShowUser(!showUser)} ref={ref} className="flex">
               {userInfo?.email ? (
                 <>{userInfo.name}</>
               ) : (

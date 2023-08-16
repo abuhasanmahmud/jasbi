@@ -49,12 +49,15 @@ const SignIn = () => {
       <div className="w-1/2 hidden lgl:inline-flex h-full text-white">
         <div className="w-[450px] h-full bg-primeColor px-10 flex flex-col gap-6 justify-center">
           <Link to="/">
-            <img src={logoLight} alt="logoImg" className="w-28" />
+            <p className="text-3xl font-bold ">
+              Jas<span className="font-extrabold text-white-900 ">B</span>i
+            </p>
           </Link>
           <div className="flex flex-col gap-1 -mt-1">
             <h1 className="font-titleFont text-xl font-medium">Stay sign in for more</h1>
             <p className="text-base">When you sign in, you are with us!</p>
           </div>
+          http://localhost:3000/
           <div className="w-[300px] flex items-start gap-3">
             <span className="text-green-500 mt-1">
               <BsCheckCircleFill />
@@ -93,7 +96,7 @@ const SignIn = () => {
           <div className="flex items-center justify-between mt-10">
             <Link to="/">
               <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-                © OREBI
+                © JASBI
               </p>
             </Link>
             <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
