@@ -22,7 +22,7 @@ const BestSellers = () => {
 
   return (
     <div className="w-full pb-20">
-      <Heading heading="Our Bestsellers" />
+      <Heading heading="Our Bestseller" />
       {loadding ? (
         <Loader />
       ) : (
