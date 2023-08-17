@@ -35,7 +35,7 @@ const Checkout = () => {
     mode: "onBlur",
   });
   const dispatch = useDispatch();
-  console.log("errors in hook form", errors);
+  // console.log("errors in hook form", errors);
 
   const [createOrder] = useCreateOrderMutation();
   const [createPayment] = useCreatePaymentMutation();
