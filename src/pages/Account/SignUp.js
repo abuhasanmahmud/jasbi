@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRegisterUserMutation } from "../../redux/api/userApiSlice";
 import { setCredentials } from "../../redux/slice/authSlice";
 import { toast } from "react-toastify";
+
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const {

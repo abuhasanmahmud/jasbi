@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
 import { useLoginMutation } from "../../redux/api/userApiSlice";
 import { setCredentials } from "../../redux/slice/authSlice";
+
 const SignIn = () => {
   const {
     register,
@@ -23,6 +24,7 @@ const SignIn = () => {
 
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname;
+  console.log("fromLocation", fromLocation);
 
   const onSubmit = async (data) => {
     const email = data.email;

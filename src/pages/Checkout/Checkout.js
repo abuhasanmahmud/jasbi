@@ -24,7 +24,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [reload, setReload] = useState(false);
   const { cartItems, totalAmount, totalQuantity } = useSelector((state) => state.cart);
-  const shipping = 20;
+  const shipping = 60;
   const GrandTotal = shipping + totalAmount;
   const {
     register,
@@ -61,27 +61,36 @@ const Checkout = () => {
     // console.log("order data", orderData);
 
     try {
-      const lineItems = cartItems?.map((item) => {
-        return {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: item.name,
-            },
-            unit_amount: item.price * 100, // because stripe interprets price in cents
-          },
-          quantity: item.quantity,
-        };
-      });
+      // const lineItems = cartItems?.map((item) => {
+      //   return {
+      //     price_data: {
+      //       currency: "usd",
+      //       product_data: {
+      //         name: item.name,
+      //         // img: item.img,
+      //       },
+      //       unit_amount: item.price * 100, // because stripe interprets price in cents
+      //     },
+
+      //     quantity: item.quantity,
+      //   };
+      // });
+
+      // if (cashPayment !== "cash") {
+      //   const { data } = await createPayment({ lineItems, orderData });
+
+      //   console.log("data", data);
+
+      //   const stripe = await stripePromise;
+      //   console.log("stripe", stripe);
+
+      //   const paymentDetails = await stripe.redirectToCheckout({ sessionId: data.id });
+      //   console.log("payment details", paymentDetails);
+      // }
 
       if (cashPayment !== "cash") {
-        const { data } = await createPayment({ lineItems });
-
-        console.log("data", data);
-
-        const stripe = await stripePromise;
-
-        await stripe.redirectToCheckout({ sessionId: data.id });
+        toast.error("payment by card comming soon please select cash on delivery");
+        return;
       }
       const res = await createOrder({ ...orderData });
       console.log("res", res);
@@ -93,13 +102,6 @@ const Checkout = () => {
     } catch (error) {
       console.log("error in checkout", error);
     }
-  };
-  // useAllOrderQuery();
-
-  const handelCheckout = async () => {
-    // const { data } = await axios.post("http://localhost:4000/api/orders/create-checkout-session", {
-    //   lineItems: lineItems,
-    // });
   };
 
   return (
@@ -331,9 +333,6 @@ const Checkout = () => {
                   <span>Total</span>
                   <span>${GrandTotal}</span>
                 </div>
-                <button className="btn btn-lg " onClick={() => handelCheckout()}>
-                  Check out
-                </button>
               </div>
             </div>
           </div>

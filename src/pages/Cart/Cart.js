@@ -10,7 +10,7 @@ import { resetCart } from "../../redux/slice/cartSlice";
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartItems, totalAmount } = useSelector((state) => state.cart);
-  const shippingCost = 100;
+  const shippingCost = 60;
 
   return (
     <div className="max-w-container mx-auto px-4">
