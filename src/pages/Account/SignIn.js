@@ -59,14 +59,14 @@ const SignIn = () => {
             <h1 className="font-titleFont text-xl font-medium">Stay sign in for more</h1>
             <p className="text-base">When you sign in, you are with us!</p>
           </div>
-          http://localhost:3000/
+         
           <div className="w-[300px] flex items-start gap-3">
             <span className="text-green-500 mt-1">
               <BsCheckCircleFill />
             </span>
             <p className="text-base text-gray-300">
               <span className="text-white font-semibold font-titleFont">
-                Get started fast with OREBI
+                Get started fast with JASBI
               </span>
               <br />
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
@@ -78,7 +78,7 @@ const SignIn = () => {
               <BsCheckCircleFill />
             </span>
             <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">Access all OREBI services</span>
+              <span className="text-white font-semibold font-titleFont">Access all JASBI services</span>
               <br />
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
               consectetur!
@@ -210,10 +210,10 @@ const SignIn = () => {
                   value: true,
                   message: "Password Required !!!",
                 },
-                // pattern: {
-                //   value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
-                //   message: "Password Must be 8 char including a special char !!!",
-                // },
+                pattern: {
+                  value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
+                  message: "Password Must be 8 char including a special char !!!",
+                },
               })}
             />
             <label className="level font-bold">
@@ -225,18 +225,23 @@ const SignIn = () => {
               )}
             </label>
           </div>
+          <p className="text-sm text-primeColor my-5">
+              <Link to="/forgetpassword"><span className="text-blue-500 font-extrabold">Forget your password ?</span></Link>
+            </p>
           {/* Checkbox */}
           <div className="flex items-start mdl:items-center gap-2 my-3">
+          
             <input
               onChange={() => setChecked(!checked)}
               className="w-4 h-4 mt-1 mdl:mt-0 cursor-pointer"
               type="checkbox"
             />
             <p className="text-sm text-primeColor">
-              I agree to the OREBI <span className="text-blue-500">Terms of Service </span>and{" "}
+              I agree to the JASBI <span className="text-blue-500">Terms of Service </span>and{" "}
               <span className="text-blue-500">Privacy Policy</span>.
             </p>
           </div>
+          
           <button
             type="submit"
             className={`${
@@ -256,7 +261,7 @@ const SignIn = () => {
           <p className="text-sm text-center font-titleFont font-medium mt-4">
             Don't have an Account?{" "}
             <Link to="/signup">
-              <span className="hover:text-blue-600 duration-300">Create Account</span>
+              <span className="text-blue-800 duration-300">Create Account</span>
             </Link>
           </p>
         </form>

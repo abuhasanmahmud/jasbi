@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRegisterUserMutation } from "../../redux/api/userApiSlice";
 import { setCredentials } from "../../redux/slice/authSlice";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
+  const [click, setClick] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,6 +26,7 @@ const SignUp = () => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const onSubmit = async (data) => {
+    setClick(true)
     const name = data.name;
     const email = data.email;
     const password = data.password;
@@ -32,6 +35,7 @@ const SignUp = () => {
       const res = await registerUser({ name, email, password });
 
       if (res.error) {
+        setClick(true)
         toast.error(res?.error?.data?.message || res.error);
         return;
       }
@@ -39,8 +43,10 @@ const SignUp = () => {
       dispatch(setCredentials({ ...userData }));
       navigate(fromLocation ? fromLocation : "/");
       toast.success("User login successfully");
+      setClick(false)
     } catch (error) {
       console.log("error", error);
+      setClick(false)
     }
   };
   return (
@@ -158,6 +164,7 @@ const SignUp = () => {
               )}
             </label>
           </div>
+         
 
           {/* errors will return when field validation fails  */}
           <div className="flex flex-col gap-.5">
@@ -171,10 +178,10 @@ const SignUp = () => {
                   value: true,
                   message: "Password Required !!!",
                 },
-                // pattern: {
-                //   value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
-                //   message: "Password Must be 8 char including a special char !!!",
-                // },
+                pattern: {
+                  value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
+                  message: "Password Must be 8 char including a special char !!!",
+                },
               })}
             />
             <label className="level font-bold">
@@ -186,6 +193,9 @@ const SignUp = () => {
               )}
             </label>
           </div>
+          <p className="text-sm text-primeColor my-5">
+              <Link to="/forgetpassword"><span className="text-blue-500 font-extrabold">Forget your password ?</span></Link>
+            </p>
           {/* Checkbox */}
           <div className="flex items-start mdl:items-center gap-2 my-3">
             <input
@@ -199,6 +209,7 @@ const SignUp = () => {
             </p>
           </div>
           <button
+          disabled={click}
             type="submit"
             className={`${
               checked
@@ -215,6 +226,7 @@ const SignUp = () => {
             </Link>
           </p>
         </form>
+        {click && <Loader />}
       </div>
     </div>
   );

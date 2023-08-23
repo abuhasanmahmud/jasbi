@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsSuitHeartFill } from "react-icons/bs";
 import { GiReturnArrow } from "react-icons/gi";
 import { FaShoppingCart } from "react-icons/fa";
@@ -6,11 +6,22 @@ import { MdOutlineLabelImportant } from "react-icons/md";
 import Image from "../../designLayouts/Image";
 import Badge from "./Badge";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/slice/cartSlice";
+import { addToWishlist } from "../../../redux/slice/wishlistSlice";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const Product = ({ product }) => {
+  const [clickWishlist, setClickWishlist] = useState(false);
+  const { wishlist } = useSelector((state) => state.wishlist);
+
   const dispatch = useDispatch();
+  console.log("wishlis", wishlist);
+  const handelWishList = (data) => {
+    const wishlistProduct = wishlist.find((item) => item._id == data._id);
+    console.log("whilish", wishlistProduct);
+    dispatch(addToWishlist(data));
+  };
 
   return (
     <div className="w-full relative group">
@@ -42,10 +53,13 @@ const Product = ({ product }) => {
               </li>
             </Link>
 
-            <li className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full">
+            <li
+              onClick={() => handelWishList(product)}
+              className="text-[#767676] hover:text-primeColor text-sm font-normal border-b-[1px] border-b-gray-200 hover:border-b-primeColor flex items-center justify-end gap-2 hover:cursor-pointer pb-1 duration-300 w-full"
+            >
               Add to Wish List
               <span>
-                <BsSuitHeartFill />
+                <BsSuitHeartFill color="red" />
               </span>
             </li>
           </ul>

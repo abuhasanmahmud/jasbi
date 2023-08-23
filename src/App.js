@@ -32,6 +32,8 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import Category from "./pages/Category/Category";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 import StripChekout from "./pages/StripeCheckout/StripCheckout";
+import ForgetPassword from "./pages/Account/forgetPassword";
+import ResetPassword from "./pages/Account/resetPassword";
 
 const Layout = () => {
   return (
@@ -76,6 +78,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>
+      <Route path="/forgetpassword" element={<ForgetPassword />}></Route>
+      <Route path="/resetpassword/:token" element={<ResetPassword />}></Route>
     </Route>
   )
 );
