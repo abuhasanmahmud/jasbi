@@ -12,6 +12,7 @@ import Loader from "../../components/Loader/Loader";
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const [click, setClick] = useState(false);
+  const [profileImg, setProfileImg] = useState("");
   const {
     register,
     handleSubmit,
@@ -25,17 +26,33 @@ const SignUp = () => {
   console.log("location", location, "fromLocation", fromLocation);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
+  const transFormFileDate = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    if (file) {
+      reader.onloadend = () => {
+        // setProfileImg(reader.result.split(",")[1]);
+        setProfileImg(reader.result);
+      };
+    } else {
+      setProfileImg("");
+    }
+  };
+
   const onSubmit = async (data) => {
-    setClick(true)
+    setClick(true);
+    await transFormFileDate(data.img[0]);
+
     const name = data.name;
     const email = data.email;
     const password = data.password;
+    const img = profileImg;
 
     try {
-      const res = await registerUser({ name, email, password });
+      const res = await registerUser({ name, email, password, img });
 
       if (res.error) {
-        setClick(true)
+        setClick(false);
         toast.error(res?.error?.data?.message || res.error);
         return;
       }
@@ -43,10 +60,10 @@ const SignUp = () => {
       dispatch(setCredentials({ ...userData }));
       navigate(fromLocation ? fromLocation : "/");
       toast.success("User login successfully");
-      setClick(false)
+      setClick(false);
     } catch (error) {
       console.log("error", error);
-      setClick(false)
+      setClick(false);
     }
   };
   return (
@@ -124,7 +141,7 @@ const SignUp = () => {
             <input
               className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
               type="text"
-              placeholder="john@workemail.com"
+              placeholder="john"
               {...register("name", {
                 required: {
                   value: true,
@@ -164,7 +181,6 @@ const SignUp = () => {
               )}
             </label>
           </div>
-         
 
           {/* errors will return when field validation fails  */}
           <div className="flex flex-col gap-.5">
@@ -193,9 +209,31 @@ const SignUp = () => {
               )}
             </label>
           </div>
-          <p className="text-sm text-primeColor my-5">
-              <Link to="/forgetpassword"><span className="text-blue-500 font-extrabold">Forget your password ?</span></Link>
+          <div className="flex flex-col gap-.5">
+            <p className="font-titleFont text-base font-semibold text-gray-600 my-2">
+              Upload your image
             </p>
+            <input
+              type="file"
+              {...register("img", {
+                required: {
+                  value: true,
+                  message: "your  img Required !!!",
+                },
+              })}
+            />
+
+            <label className="level font-bold">
+              {errors?.img?.type === "required" && (
+                <span className="label-text-alt text-red-500">{errors?.img?.message}</span>
+              )}
+            </label>
+          </div>
+          <p className="text-sm text-primeColor my-5">
+            <Link to="/forgetpassword">
+              <span className="text-blue-500 font-extrabold">Forget your password ?</span>
+            </Link>
+          </p>
           {/* Checkbox */}
           <div className="flex items-start mdl:items-center gap-2 my-3">
             <input
@@ -209,7 +247,7 @@ const SignUp = () => {
             </p>
           </div>
           <button
-          disabled={click}
+            disabled={click}
             type="submit"
             className={`${
               checked

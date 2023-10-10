@@ -16,7 +16,7 @@ const Product = ({ product }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
 
   const dispatch = useDispatch();
-  console.log("wishlis", wishlist);
+  // console.log("wishlis", wishlist);
   const handelWishList = (data) => {
     const wishlistProduct = wishlist.find((item) => item._id == data._id);
     console.log("whilish", wishlistProduct);
