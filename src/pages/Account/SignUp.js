@@ -23,7 +23,7 @@ const SignUp = () => {
   const { userInfo } = useSelector((state) => state.user);
   const location = useLocation();
   const fromLocation = location?.state?.from?.pathname;
-  console.log("location", location, "fromLocation", fromLocation);
+  // console.log("location", location, "fromLocation", fromLocation);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const transFormFileDate = (file) => {
