@@ -26,30 +26,30 @@ const SignUp = () => {
   // console.log("location", location, "fromLocation", fromLocation);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
-  const transFormFileDate = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    if (file) {
-      reader.onloadend = () => {
-        // setProfileImg(reader.result.split(",")[1]);
-        setProfileImg(reader.result);
-      };
-    } else {
-      setProfileImg("");
-    }
-  };
+  // const transFormFileDate = (file) => {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   if (file) {
+  //     reader.onloadend = () => {
+  //       // setProfileImg(reader.result.split(",")[1]);
+  //       setProfileImg(reader.result);
+  //     };
+  //   } else {
+  //     setProfileImg("");
+  //   }
+  // };
 
   const onSubmit = async (data) => {
     setClick(true);
-    await transFormFileDate(data.img[0]);
+    // await transFormFileDate(data.img[0]);
 
     const name = data.name;
     const email = data.email;
     const password = data.password;
-    const img = profileImg;
+    // const img = profileImg;
 
     try {
-      const res = await registerUser({ name, email, password, img });
+      const res = await registerUser({ name, email, password});
 
       if (res.error) {
         setClick(false);
@@ -209,7 +209,7 @@ const SignUp = () => {
               )}
             </label>
           </div>
-          <div className="flex flex-col gap-.5">
+          {/* <div className="flex flex-col gap-.5">
             <p className="font-titleFont text-base font-semibold text-gray-600 my-2">
               Upload your image
             </p>
@@ -228,7 +228,7 @@ const SignUp = () => {
                 <span className="label-text-alt text-red-500">{errors?.img?.message}</span>
               )}
             </label>
-          </div>
+          </div> */}
           <p className="text-sm text-primeColor my-5">
             <Link to="/forgetpassword">
               <span className="text-blue-500 font-extrabold">Forget your password ?</span>
