@@ -59,7 +59,7 @@ const SignIn = () => {
             <h1 className="font-titleFont text-xl font-medium">Stay sign in for more</h1>
             <p className="text-base">When you sign in, you are with us!</p>
           </div>
-         
+
           <div className="w-[300px] flex items-start gap-3">
             <span className="text-green-500 mt-1">
               <BsCheckCircleFill />
@@ -226,11 +226,12 @@ const SignIn = () => {
             </label>
           </div>
           <p className="text-sm text-primeColor my-5">
-              <Link to="/forgetpassword"><span className="text-blue-500 font-extrabold">Forget your password ?</span></Link>
-            </p>
+            <Link to="/forgetpassword">
+              <span className="text-blue-500 font-extrabold">Forget your password ?</span>
+            </Link>
+          </p>
           {/* Checkbox */}
           <div className="flex items-start mdl:items-center gap-2 my-3">
-          
             <input
               onChange={() => setChecked(!checked)}
               className="w-4 h-4 mt-1 mdl:mt-0 cursor-pointer"
@@ -241,7 +242,7 @@ const SignIn = () => {
               <span className="text-blue-500">Privacy Policy</span>.
             </p>
           </div>
-          
+
           <button
             type="submit"
             className={`${
