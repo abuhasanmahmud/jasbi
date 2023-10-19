@@ -121,8 +121,8 @@ const HeaderBottom = () => {
             <div onClick={() => setShowUser(!showUser)} ref={ref} className="flex">
               {userInfo?.email ? (
                 <>
-                  {" "}
-                  <img className="w-15 rounded-full h-10" src={userInfo?.img?.url} alt="" />{" "}
+                  {userInfo?.name}
+                  {/* <img className="w-15 rounded-full h-10" src={userInfo?.img?.url} alt="" />{" "} */}
                 </>
               ) : (
                 <>
