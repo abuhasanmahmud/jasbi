@@ -43,14 +43,14 @@ import Features from "./pages/Features/Features";
 const Layout = () => {
   return (
     <div>
-      {/* <Header />  */}
-      <Header2 />
-      {/* <HeaderBottom />
+      <Header />
+      {/* <Header2 /> */}
+      <HeaderBottom />
       <SpecialCase />
-      <ScrollRestoration /> */}
+      <ScrollRestoration />
       <Outlet />
-      {/* <Footer />
-      <FooterBottom /> */}
+      <Footer />
+      <FooterBottom />
     </div>
   );
 };
@@ -60,31 +60,31 @@ const router = createBrowserRouter(
       {/* <Route path="/stripe-checkout" element={<StripChekout />}></Route> */}
       <Route path="/" element={<Layout />}>
         {/* ==================== Header Navlink Start here =================== */}
-        <Route index element={<Home2 />}></Route>
-        {/* <Route path="/company" element={<Company />}></Route>
+        <Route index element={<Home />}></Route>
+        <Route path="/company" element={<Company />}></Route>
         <Route path="/team" element={<Team />}></Route>
-        <Route path="/features" element={<Features />}></Route> */}
-        {/* <Route path="/shop" element={<Shop />}></Route> */}
-        {/* <Route path="/about" element={<About />}></Route>
+        <Route path="/features" element={<Features />}></Route>
+        <Route path="/shop" element={<Shop />}></Route>
+        <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/journal" element={<Journal />}></Route>
         {/* ==================== Header Navlink End here ===================== */}
-        {/* <Route path="/offer" element={<Offer />}></Route>
+        {/* {/* <Route path="/offer" element={<Offer />}></Route> */}
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
 
         <Route path="/confirm-order" element={<ConfirmOrderPage />}></Route>
         <Route path="/user-profile" element={<UserProfile />}></Route>
-        <Route path="/category" element={<Category />}></Route> */}{" "}
-        */}
-        {/* <Route
+        <Route path="/category" element={<Category />}></Route>
+
+        <Route
           path="/checkout"
           element={
             <PrivateRoute>
               <Checkout />
             </PrivateRoute>
           }
-        ></Route> */}
+        ></Route>
         <Route
           path="/company"
           element={

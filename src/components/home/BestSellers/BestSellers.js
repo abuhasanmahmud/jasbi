@@ -11,6 +11,7 @@ const BestSellers = () => {
   // const bestSellingProduct = products2.slice(0, 6);
   const dispatch = useDispatch();
   const { data } = useAllProductQuery();
+  console.log("data...", data);
   const { products, loadding } = useSelector((state) => state.allProducts);
   // console.log("products", products, loadding);
   useEffect(() => {
