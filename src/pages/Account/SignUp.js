@@ -22,8 +22,11 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
   const location = useLocation();
+
+  console.log("history", navigate);
+
   const fromLocation = location?.state?.from?.pathname;
-  // console.log("location", location, "fromLocation", fromLocation);
+  console.log("location", location, "fromLocation", fromLocation);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   // const transFormFileDate = (file) => {
@@ -49,7 +52,8 @@ const SignUp = () => {
     // const img = profileImg;
 
     try {
-      const res = await registerUser({ name, email, password});
+      const res = await registerUser({ name, email, password });
+      console.log("res..in signup page", res);
 
       if (res.error) {
         setClick(false);
@@ -68,68 +72,6 @@ const SignUp = () => {
   };
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <div className="w-1/2 hidden lgl:inline-flex h-full text-white">
-        <div className="w-[450px] h-full bg-primeColor px-10 flex flex-col gap-6 justify-center">
-          <p className="text-3xl font-bold ">
-            Jas<span className="font-extrabold ">B</span>i
-          </p>
-          <div className="flex flex-col gap-1 -mt-1">
-            <h1 className="font-titleFont text-xl font-medium">Stay sign in for more</h1>
-            <p className="text-base">When you sign in, you are with us!</p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">
-                Get started fast with OREBI
-              </span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
-              consectetur!
-            </p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">Access all OREBI services</span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
-              consectetur!
-            </p>
-          </div>
-          <div className="w-[300px] flex items-start gap-3">
-            <span className="text-green-500 mt-1">
-              <BsCheckCircleFill />
-            </span>
-            <p className="text-base text-gray-300">
-              <span className="text-white font-semibold font-titleFont">Trusted by online Shoppers</span>
-              <br />
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab omnis nisi dolor recusandae
-              consectetur!
-            </p>
-          </div>
-          <div className="flex items-center justify-between mt-10">
-            <Link to="/">
-              <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-                ©JASBI
-              </p>
-            </Link>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Terms
-            </p>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Privacy
-            </p>
-            <p className="text-sm font-titleFont font-semibold text-gray-300 hover:text-white cursor-pointer duration-300">
-              Security
-            </p>
-          </div>
-        </div>
-      </div>
       <div className="w-full  h-full md:p-10 ">
         <form className="w-100 mx-auto shadow-xl px-4 py-8 " onSubmit={handleSubmit(onSubmit)}>
           {/* register your input into the hook by invoking the "register" function */}
@@ -229,31 +171,11 @@ const SignUp = () => {
               )}
             </label>
           </div> */}
-          <p className="text-sm text-primeColor my-5">
-            <Link to="/forgetpassword">
-              <span className="text-blue-500 font-extrabold">Forget your password ?</span>
-            </Link>
-          </p>
-          {/* Checkbox */}
-          <div className="flex items-start mdl:items-center gap-2 my-3">
-            <input
-              onChange={() => setChecked(!checked)}
-              className="w-4 h-4 mt-1 mdl:mt-0 cursor-pointer"
-              type="checkbox"
-            />
-            <p className="text-sm text-primeColor">
-              I agree to the OREBI <span className="text-blue-500">Terms of Service </span>and{" "}
-              <span className="text-blue-500">Privacy Policy</span>.
-            </p>
-          </div>
+
           <button
             disabled={click}
             type="submit"
-            className={`${
-              checked
-                ? "bg-primeColor hover:bg-black hover:text-white cursor-pointer"
-                : "bg-gray-500 hover:bg-gray-500 hover:text-gray-200 cursor-none"
-            } w-full text-gray-200 text-base font-medium h-10 rounded-md hover:text-white duration-300`}
+            className="my-3 bg-primeColor hover:bg-black hover:text-white cursor-pointer w-full text-gray-200 text-base font-medium h-10 rounded-md hover:text-white duration-300"
           >
             Create Account
           </button>
